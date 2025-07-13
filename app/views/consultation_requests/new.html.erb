@@ -1,0 +1,24 @@
+<div class="max-w-3xl mx-auto py-8">
+  <h2 class="text-2xl font-bold mb-6">Request Consultation for <%= @property.title %></h2>
+
+  <%= form_with(model: [@property, @consultation_request], local: true, html: { class: "space-y-6" }) do |f| %>
+    <div>
+      <%= f.label :service_type, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :service_type, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :summary, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :summary, rows: 4, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.label :supporting_document, class: "block text-sm font-medium text-gray-700" %>
+      <%= f.file_field :supporting_document, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
+    </div>
+
+    <div>
+      <%= f.submit "Submit Request", class: "inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700" %>
+    </div>
+  <% end %>
+</div>

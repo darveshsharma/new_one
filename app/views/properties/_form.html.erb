@@ -1,0 +1,59 @@
+<%= form_with(model: property, local: true, html: { multipart: true }) do |form| %>
+  <% if property.errors.any? %>
+    <div class="mb-4">
+      <h2 class="text-red-600 text-lg font-semibold">Errors:</h2>
+      <ul class="list-disc pl-5">
+        <% property.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :title, class: "block font-semibold" %>
+    <%= form.text_field :title, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :description, class: "block font-semibold" %>
+    <%= form.text_area :description, rows: 3, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :price, class: "block font-semibold" %>
+    <%= form.number_field :price, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :location, class: "block font-semibold" %>
+    <%= form.text_field :location, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :property_type, class: "block text-gray-700" %>
+    <%= form.select :property_type, ['Residential', 'Commercial', 'Industrial'], prompt: "Select type", class: "border rounded w-full py-2 px-3" %>
+  </div>
+
+  <!-- Main Image -->
+  <div class="mb-4">
+    <%= form.label :main_image, class: "block font-semibold" %>
+    <%= form.file_field :main_image, class: "mt-1 block w-full" %>
+  </div>
+
+  <!-- Thumbnail -->
+  <div class="mb-4">
+    <%= form.label :thumbnail, class: "block font-semibold" %>
+    <%= form.file_field :thumbnail, class: "mt-1 block w-full" %>
+  </div>
+
+  <!-- Gallery Images -->
+  <div class="mb-4">
+    <%= form.label :images, "Gallery Images", class: "block font-semibold" %>
+    <%= form.file_field :images, multiple: true, class: "mt-1 block w-full" %>
+  </div>
+
+  <div class="mt-6">
+    <%= form.submit class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
+  </div>
+<% end %>

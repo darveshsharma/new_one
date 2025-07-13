@@ -1,0 +1,26 @@
+<h1 class="text-2xl font-bold mb-4">Membership Payment</h1>
+
+<% if current_user.membership_paid %>
+  <p class="text-green-600 font-semibold">You are already a member!</p>
+<% else %>
+  <%= form_with(model: @membership_payment, local: true) do |form| %>
+    <div class="mb-4">
+      <%= form.label :amount, "Amount (₹)" %>
+      <%= form.number_field :amount, value: 10000, readonly: true, class: "form-input mt-1 block w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :payment_gateway %>
+      <%= form.select :payment_gateway, ["Razorpay", "Stripe"], {}, class: "form-select mt-1 block w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :transaction_id %>
+      <%= form.text_field :transaction_id, placeholder: "Enter transaction/reference ID", class: "form-input mt-1 block w-full" %>
+    </div>
+
+    <div>
+      <%= form.submit "Submit Payment", class: "bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded" %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,87 @@
+<!-- app/views/properties/show.html.erb -->
+
+<h1 class="text-3xl font-bold mb-6"><%= @property.title %></h1>
+
+<div class="space-y-2 mb-6">
+  <p><strong>Description:</strong> <%= @property.description %></p>
+  <p><strong>Price:</strong> ₹<%= number_with_delimiter(@property.price) %></p>
+  <p><strong>Location:</strong> <%= @property.location %></p>
+  <p><strong>Type:</strong> <%= @property.property_type %></p>
+</div>
+
+<div class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">Main Image</h2>
+  <% if @property.main_image.attached? %>
+    <%= image_tag @property.main_image, class: "w-64 h-auto rounded shadow" %>
+  <% else %>
+    <p class="text-gray-500 mb-2">No main image uploaded.</p>
+    <%= image_tag "https://via.placeholder.com/400x300?text=No+Main+Image", class: "w-64 h-auto rounded shadow" %>
+  <% end %>
+</div>
+
+<div class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">Thumbnail</h2>
+  <% if @property.thumbnail.attached? %>
+    <%= image_tag @property.thumbnail, class: "w-32 h-auto rounded shadow" %>
+  <% else %>
+    <p class="text-gray-500 mb-2">No thumbnail uploaded.</p>
+    <%= image_tag "https://via.placeholder.com/150x150?text=No+Thumbnail", class: "w-32 h-auto rounded shadow" %>
+  <% end %>
+</div>
+
+<div class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">Gallery Images</h2>
+  <% if @property.images.attached? %>
+    <div class="flex flex-wrap gap-4">
+      <% @property.images.each do |img| %>
+        <%= image_tag img, class: "w-32 h-auto rounded shadow" %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-500 mb-2">No gallery images uploaded.</p>
+    <div class="flex flex-wrap gap-4">
+      <% 3.times do %>
+        <%= image_tag "https://via.placeholder.com/150x150?text=No+Image", class: "w-32 h-auto rounded shadow" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<!-- Property Documents Section -->
+<div class="mb-8">
+  <h2 class="text-xl font-semibold mb-4">Property Documents</h2>
+
+  <% if @property.documents.any? %>
+    <div class="space-y-4">
+      <% @property.documents.each do |document| %>
+        <div class="border p-4 rounded shadow-sm">
+          <p class="font-medium mb-2"><%= document.document_type %></p>
+
+          <% if current_user.document_accesses.exists?(document_id: document.id, payment_status: 'paid') %>
+            <!-- If user has paid, show download link -->
+            <%= link_to "Download Document",
+                        rails_blob_path(document.file_url, disposition: "attachment"),
+                        class: "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 inline-block" %>
+          <% else %>
+            <!-- If not paid, show payment button -->
+            <p class="text-gray-700 mb-2">
+              To download this document, you need to pay 1% of property value (₹<%= number_with_delimiter((@property.price * 0.01).round(2)) %>).
+            </p>
+
+            <%= button_to "Pay & Download",
+                          document_accesses_path(property_id: @property.id, document_id: document.id),
+                          method: :post,
+                          class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-gray-500">No documents uploaded for this property.</p>
+  <% end %>
+</div>
+
+<div class="mt-8">
+  <%= link_to 'Edit Property', edit_property_path(@property), class: "bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-600 inline-block" %>
+  <%= link_to 'Back to Properties', properties_path, class: "bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 inline-block ml-2" %>
+</div>
