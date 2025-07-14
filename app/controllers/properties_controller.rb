@@ -1,4 +1,5 @@
 class PropertiesController < ApplicationController
+  layout 'application'
   before_action :set_property, only: [:show, :edit, :update, :destroy]
   before_action :require_active_member, only: [:new, :create, :edit, :update, :destroy]
   before_action only: [:edit, :update, :destroy] do

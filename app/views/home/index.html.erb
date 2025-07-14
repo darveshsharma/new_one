@@ -1,23 +1,155 @@
-<%= render 'shared/hero' %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamara Group - Real Estate</title>
 
-<div class="container my-10">
-  <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Featured Properties</h2>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com "></script>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <% @properties.each do |property| %>
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-gray-900 mb-2"><%= property.title %></h3>
-          <p class="text-gray-700 mb-4"><%= truncate(property.description, length: 100) %></p>
-          <p class="text-gray-800 mb-2"><strong>Price:</strong> ₹<%= number_with_delimiter(property.price) %></p>
-          <p class="text-gray-800 mb-4"><strong>Location:</strong> <%= property.location %></p>
-          <%= link_to "View Details", property_path(property), class: "inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded" %>
-        </div>
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #fefefe;
+    }
+
+    .bg-dark-green {
+      background-color: #294b52;
+      color: white;
+    }
+
+    .text-dark-green {
+      color: #294b52;
+    }
+
+    .border-white {
+      border-color: white;
+    }
+
+    .submit-button {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.25em;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background-color: white;
+      color: #294b52;
+    }
+
+    .property-image {
+      border-radius: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  
+
+  <!-- Hero Section with Background Image -->
+<section class="relative text-white py-32 text-center">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Property Background" class="w-full h-full object-cover"/>
+    <div class="absolute inset-0 bg-black opacity-30"></div> <!-- Optional overlay for text readability -->
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 container mx-auto px-4">
+    <h1 class="text-5xl font-bold mb-4">Discover Your Ideal Home</h1>
+    <p class="text-lg mb-6">Explore Spaces Designed for You</p>
+    <%= link_to 'View Properties', properties_path, class: "bg-dark-green text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-white hover:text-dark-green transition duration-300" %>
+
+  </div>
+</section>
+
+
+  <!-- Trusted Real Estate Partner Section -->
+  <section class="py-12 bg-white">
+  <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <!-- Left text content -->
+    <div>
+      <h2 class="text-4xl font-bold mb-4 text-dark-green">Trusted Real Estate Partner</h2>
+      <p class="text-lg text-gray-700">
+        We pride ourselves on delivering exceptional real estate services that prioritize client satisfaction and success.
+      </p>
+    </div>
+
+    <!-- Right image grid -->
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Large vertical image -->
+      <div class="row-span-2">
+        <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Modern Home" class="rounded-2xl shadow-lg object-cover w-full h-full" />
       </div>
-    <% end %>
-  </div>
 
-  <div class="text-center mt-10">
-    <%= link_to "View All Properties", properties_path, class: "inline-block bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded" %>
+      <!-- Top small image -->
+      <div>
+        <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kitchen Interior" class="rounded-2xl shadow-lg object-cover w-full h-full" />
+      </div>
+
+      <!-- Bottom small image -->
+      <div>
+        <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bedroom Interior" class="rounded-2xl shadow-lg object-cover w-full h-full" />
+      </div>
+    </div>
   </div>
-</div>
+</section>
+
+
+  <!-- Contact Form Section -->
+  <section class="bg-dark-green py-12">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-8 text-white">Let's Find Your Perfect Place</h2>
+      <p class="text-lg text-center mb-8 text-white">
+        Let's discuss your real estate goals. Contact us for a consultation.
+      </p>
+      <form class="max-w-md mx-auto">
+        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" placeholder="First name*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
+          <input type="text" placeholder="Last name*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
+        </div>
+        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="email" placeholder="Email address*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
+          <input type="tel" placeholder="Phone number*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
+        </div>
+        <textarea placeholder="Message*" rows="4" class="w-full p-3 border border-white focus:border-blue-500 rounded mb-4" required></textarea>
+        <button type="submit" class="submit-button">Submit</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white py-6">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="flex items-center">
+          <%= image_tag "hamara.png", alt: "Hamara Group Logo", class: "h-16 w-auto mr-4" %>
+        <p class="text-sm">© 2024. All Rights Reserved.</p>
+      </div>
+      <div class="flex space-x-4">
+        <a href="#" class="text-dark-green hover:text-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M7.878 4.878A5.5 5.5 0 002 10.5c0 2.757 2.243 5 5 5 1.932 0 3.512-1.087 4.538-2.707l-1.887-.894a1 1 0 01-.894-.553H11v-2h2.886zM7.5 14.25a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0z" />
+          </svg>
+        </a>
+        <a href="#" class="text-dark-green hover:text-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M24 4.557c-.883.389-1.763.68-2.644.893.714.714 1.78 1.065 2.831 1.065 1.955 0 3.322-1.384 3.322-3.313 0-.87-.378-1.65-1.112-2.36.678-.24 1.329-.379 2.003-.379 2.718 0 5.195 1.946 5.195 5.457 0 3.865-2.313 7.184-5.777 8.568-.378.265-.813.41-1.238.41-.369 0-.79-.143-1.238-.41-.475-.287-.852-.72-.948-1.238H14.25V9.25a.25.25 0 01.25-.25h2.458A2.5 2.5 0 0119.5 10c0 .694-.25 1.381-.707 1.982l3.15 3.15a.25.25 0 010 .353h-.001c-.001 0-.001 0-.002 0a.25.25 0 01-.352 0l-3.15-3.15a.25.25 0 010-.352zM10 20.5c-5.523 0-10-4.477-10-10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z" />
+          </svg>
+        </a>
+        <a href="#" class="text-dark-green hover:text-blue-500">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M24 4.557c-.883.389-1.763.68-2.644.893.714.714 1.78 1.065 2.831 1.065 1.955 0 3.322-1.384 3.322-3.313 0-.87-.378-1.65-1.112-2.36.678-.24 1.329-.379 2.003-.379 2.718 0 5.195 1.946 5.195 5.457 0 3.865-2.313 7.184-5.777 8.568-.378.265-.813.41-1.238.41-.369 0-.79-.143-1.238-.41-.475-.287-.852-.72-.948-1.238H14.25V9.25a.25.25 0 01.25-.25h2.458A2.5 2.5 0 0119.5 10c0 .694-.25 1.381-.707 1.982l3.15 3.15a.25.25 0 010 .353h-.001c-.001 0-.001 0-.002 0a.25.25 0 01-.352 0l-3.15-3.15a.25.25 0 010-.352zM10 20.5c-5.523 0-10-4.477-10-10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
