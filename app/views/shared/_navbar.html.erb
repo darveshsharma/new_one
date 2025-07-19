@@ -19,7 +19,7 @@
             <%= link_to 'Explore Properties', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
             <%= link_to 'Membership', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
 
-            <% if current_user.membership_paid? %>
+            <% if current_user.active_member? %>
               <%= link_to 'List Property', new_property_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
               <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
             <% else %>
@@ -53,7 +53,7 @@
         <%= link_to 'Explore Properties', properties_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
         <%= link_to 'Membership', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
 
-        <% if current_user.membership_paid? %>
+        <% if current_user.active_member? %>
           <%= link_to 'List Property', new_property_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
           <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
         <% else %>

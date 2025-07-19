@@ -4,7 +4,7 @@
   <%= form_with url: membership_payments_path, method: :post, local: true do |f| %>
     <div class="mb-4">
       <label class="block mb-2">Amount (₹)</label>
-      <input value="10000" readonly class="w-full border p-3 rounded" type="number" name="membership_payment[amount]">
+      <input value="1" readonly class="w-full border p-3 rounded" type="number" name="membership_payment[amount]">
     </div>
 
     <div class="mb-4">
@@ -33,7 +33,7 @@
         'X-CSRF-Token': "<%= form_authenticity_token %>",
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ amount: 10000 })
+      body: JSON.stringify({ amount: 1 })
     })
     .then(response => response.json())
     .then(data => {
