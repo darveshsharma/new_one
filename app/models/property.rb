@@ -2,6 +2,8 @@ class Property < ApplicationRecord
   belongs_to :user
   has_many :images, dependent: :destroy
 
+  scope :featured, -> { where(featured: true) }
+
   has_many_attached :images # user uploads
   has_one_attached :main_image
   has_one_attached :thumbnail
