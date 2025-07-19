@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_19_120111) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_19_131447) do
   create_table "active_admin_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -134,6 +134,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_19_120111) do
     t.datetime "paid_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "razorpay_order_id"
     t.index ["user_id"], name: "index_membership_payments_on_user_id"
   end
 

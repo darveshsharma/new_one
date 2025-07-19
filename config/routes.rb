@@ -11,8 +11,10 @@ devise_for :admin_users, ActiveAdmin::Devise.config
 ActiveAdmin.routes(self)
 
 # Membership payments
-resources :membership_payments, only: [:new, :create, :show]
-get '/membership', to: 'membership_payments#new', as: :membership
+resources :membership_payments, only: [:new, :create]
+post 'create_razorpay_order', to: 'membership_payments#create_razorpay_order'
+post 'verify_razorpay_payment', to: 'membership_payments#verify_razorpay_payment'
+
 
 # Properties and nested resources
 resources :properties do

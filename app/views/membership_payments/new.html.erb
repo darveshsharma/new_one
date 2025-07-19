@@ -1,26 +1,79 @@
-<h1 class="text-2xl font-bold mb-4">Membership Payment</h1>
+<h1 class="text-2xl font-bold mb-6">Membership Payment</h1>
 
-<% if current_user.membership_paid %>
-  <p class="text-green-600 font-semibold">You are already a member!</p>
-<% else %>
-  <%= form_with(model: @membership_payment, local: true) do |form| %>
+<div class="max-w-md mx-auto">
+  <%= form_with url: membership_payments_path, method: :post, local: true do |f| %>
     <div class="mb-4">
-      <%= form.label :amount, "Amount (₹)" %>
-      <%= form.number_field :amount, value: 10000, readonly: true, class: "form-input mt-1 block w-full" %>
+      <label class="block mb-2">Amount (₹)</label>
+      <input value="10000" readonly class="w-full border p-3 rounded" type="number" name="membership_payment[amount]">
     </div>
 
     <div class="mb-4">
-      <%= form.label :payment_gateway %>
-      <%= form.select :payment_gateway, ["Razorpay", "Stripe"], {}, class: "form-select mt-1 block w-full" %>
+      <label class="block mb-2">Payment Gateway</label>
+      <select name="membership_payment[payment_gateway]" class="w-full border p-3 rounded">
+        <option value="Razorpay">Razorpay</option>
+      </select>
     </div>
 
-    <div class="mb-4">
-      <%= form.label :transaction_id %>
-      <%= form.text_field :transaction_id, placeholder: "Enter transaction/reference ID", class: "form-input mt-1 block w-full" %>
-    </div>
-
-    <div>
-      <%= form.submit "Submit Payment", class: "bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded" %>
-    </div>
+    <!-- Razorpay Payment Button -->
+    <button id="rzp-button" type="button" class="bg-green-700 text-white px-6 py-3 rounded font-bold hover:bg-green-800">
+      Pay with Razorpay
+    </button>
   <% end %>
-<% end %>
+</div>
+
+<!-- Razorpay JS Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById('rzp-button').onclick = function(e){
+    e.preventDefault();
+
+    fetch("<%= create_razorpay_order_path %>", {
+      method: "POST",
+      headers: {
+        'X-CSRF-Token': "<%= form_authenticity_token %>",
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount: 10000 })
+    })
+    .then(response => response.json())
+    .then(data => {
+      var options = {
+        "key": "<%= Rails.application.credentials.dig(:razorpay, :key_id) %>",
+        "amount": data.amount,
+        "currency": "INR",
+        "name": "HamaraGroup Membership",
+        "description": "Membership Payment",
+        "order_id": data.id,
+        "handler": function (response){
+          // Submit payment success details to controller
+          fetch("<%= verify_razorpay_payment_path %>", {
+            method: "POST",
+            headers: {
+              'X-CSRF-Token': "<%= form_authenticity_token %>",
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success){
+              alert("Payment successful. Membership activated.");
+              window.location.href = "/";
+            } else {
+              alert("Payment failed verification. Contact support.");
+            }
+          });
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    });
+  }
+</script>
