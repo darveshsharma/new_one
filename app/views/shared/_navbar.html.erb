@@ -36,7 +36,7 @@
 
 
          <!-- Logout -->
-         <%= link_to 'Logout', destroy_user_session_path, method: :delete, data: { confirm: "Are you sure you want to log out?" }, class: "text-red-500 px-3 py-2 rounded-md text-lg font-medium" %>
+        <%= link_to 'Logout', destroy_user_session_path, class: "text-red-500 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
 
 
        <% else %>
