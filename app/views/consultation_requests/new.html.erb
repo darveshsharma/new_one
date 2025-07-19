@@ -1,24 +1,42 @@
-<div class="max-w-3xl mx-auto py-8">
-  <h2 class="text-2xl font-bold mb-6">Request Consultation for <%= @property.title %></h2>
+<section class="flex flex-col md:flex-row bg-[#ccaa79]">
+  <!-- Left Image -->
+  <div class="md:w-1/2 w-full">
+    <img src="https://images.unsplash.com/photo-1656992469966-f046fa50420a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjQzOTV8MHwxfHNlYXJjaHw3MXx8aG91c2UlMjByZW5kZXJ8ZW58MHx8fHwxNzI0MjA4MDAyfDA&ixlib=rb-4.0.3&q=80&w=1080"
+         alt="Consultation"
+         class="object-cover w-full h-full aspect-square" />
+  </div>
 
-  <%= form_with(model: [@property, @consultation_request], local: true, html: { class: "space-y-6" }) do |f| %>
-    <div>
-      <%= f.label :service_type, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.text_field :service_type, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
-    </div>
+  <!-- Right Form Section -->
+  <div class="md:w-1/2 w-full flex flex-col justify-center px-8 py-12 text-[#354041] font-[Manrope]">
+    <h1 class="text-center text-[3.75em] font-bold leading-tight tracking-[0.017em] mb-4">Get in Touch</h1>
+    <p class="text-center text-[1.5625em] font-[Mulish] leading-snug mb-8">Reach out to our team and we'll be happy to assist you.</p>
 
-    <div>
-      <%= f.label :summary, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.text_area :summary, rows: 4, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
-    </div>
+    <%= form_with(model: [@property, @consultation_request], local: true, html: { class: "grid grid-cols-1 md:grid-cols-2 gap-4" }) do |f| %>
 
-    <div>
-      <%= f.label :supporting_document, class: "block text-sm font-medium text-gray-700" %>
-      <%= f.file_field :supporting_document, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm" %>
-    </div>
+      <div class="col-span-1">
+        <%= f.text_field :first_name, placeholder: "First name*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+      </div>
 
-    <div>
-      <%= f.submit "Submit Request", class: "inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700" %>
-    </div>
-  <% end %>
-</div>
+      <div class="col-span-1">
+        <%= f.text_field :last_name, placeholder: "Last name*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <%= f.email_field :email, placeholder: "Email address*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <%= f.telephone_field :phone_number, placeholder: "Phone number*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <%= f.text_area :message, placeholder: "Message*", rows: 4, class: "bg-white border border-gray-500 focus:border-gray-600 py-3.5 rounded text-gray-700 w-full text-base px-4 shadow-inner resize-none transition-colors duration-300 ease-out focus:outline-none" %>
+      </div>
+
+      <div class="col-span-1 md:col-span-2">
+        <%= f.submit "INQUIRE NOW", class: "w-full px-8 py-3 bg-[#ccaa79] text-[#354041] font-bold text-[1.25em] rounded border-[5px] border-double border-[#354041] hover:bg-[#b48f5c] transition" %>
+      </div>
+
+    <% end %>
+  </div>
+</section>

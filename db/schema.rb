@@ -79,6 +79,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_19_131447) do
     t.string "phone_number"
     t.string "location_of_property"
     t.text "description"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["property_id"], name: "index_consultation_requests_on_property_id"
     t.index ["user_id"], name: "index_consultation_requests_on_user_id"
   end

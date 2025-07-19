@@ -21,7 +21,7 @@
 
             <% if current_user.active_member? %>
               <%= link_to 'List Property', new_property_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-              <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+              <%= link_to 'Consultation', new_consultation_request_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
             <% else %>
               <%= link_to 'List Property', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
               <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
@@ -31,7 +31,7 @@
         <% else %>
           <%= link_to 'Home', root_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
           <%= link_to 'Explore', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-          <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Consultation', new_consultation_request_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
           <%= link_to 'Login', new_user_session_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
           <%= link_to 'Register', new_user_registration_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
         <% end %>
@@ -55,7 +55,7 @@
 
         <% if current_user.active_member? %>
           <%= link_to 'List Property', new_property_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-          <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Consultation', new_consultation_request_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
         <% else %>
           <%= link_to 'List Property', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
           <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
@@ -65,7 +65,7 @@
     <% else %>
       <%= link_to 'Home', root_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
       <%= link_to 'Explore', properties_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-      <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <%= link_to 'Consultation', new_consultation_request_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
       <%= link_to 'Login', new_user_session_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
       <%= link_to 'Register', new_user_registration_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
     <% end %>

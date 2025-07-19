@@ -1,87 +1,176 @@
-<!-- app/views/properties/show.html.erb -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Property Title -->
+  <h1 class="text-4xl font-bold text-center mb-8 text-[#354041] font-manrope"><%= @property.title %></h1>
 
-<h1 class="text-3xl font-bold mb-6"><%= @property.title %></h1>
+  <div class="grid md:grid-cols-2 gap-8">
+    <!-- Images Section -->
+    <div>
+      <div class="relative">
+        <!-- Main Image -->
+        <div class="overflow-hidden rounded shadow-lg">
+          <% main_image_url = nil %>
 
-<div class="space-y-2 mb-6">
-  <p><strong>Description:</strong> <%= @property.description %></p>
-  <p><strong>Price:</strong> ₹<%= number_with_delimiter(@property.price) %></p>
-  <p><strong>Location:</strong> <%= @property.location %></p>
-  <p><strong>Type:</strong> <%= @property.property_type %></p>
-</div>
+          <% if @property.images.attached? %>
+            <% main_image_url = url_for(@property.images.first) %>
+          <% elsif @property.images_table_records.any? && @property.images_table_records.first.main_image.present? %>
+            <% main_image_url = @property.images_table_records.first.main_image %>
+          <% end %>
 
-<div class="mb-6">
-  <h2 class="text-xl font-semibold mb-2">Main Image</h2>
-  <% if @property.main_image.attached? %>
-    <%= image_tag @property.main_image, class: "w-64 h-auto rounded shadow" %>
-  <% else %>
-    <p class="text-gray-500 mb-2">No main image uploaded.</p>
-    <%= image_tag "https://via.placeholder.com/400x300?text=No+Main+Image", class: "w-64 h-auto rounded shadow" %>
-  <% end %>
-</div>
-
-<div class="mb-6">
-  <h2 class="text-xl font-semibold mb-2">Thumbnail</h2>
-  <% if @property.thumbnail.attached? %>
-    <%= image_tag @property.thumbnail, class: "w-32 h-auto rounded shadow" %>
-  <% else %>
-    <p class="text-gray-500 mb-2">No thumbnail uploaded.</p>
-    <%= image_tag "https://via.placeholder.com/150x150?text=No+Thumbnail", class: "w-32 h-auto rounded shadow" %>
-  <% end %>
-</div>
-
-<div class="mb-6">
-  <h2 class="text-xl font-semibold mb-2">Gallery Images</h2>
-  <% if @property.images.attached? %>
-    <div class="flex flex-wrap gap-4">
-      <% @property.images.each do |img| %>
-        <%= image_tag img, class: "w-32 h-auto rounded shadow" %>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="text-gray-500 mb-2">No gallery images uploaded.</p>
-    <div class="flex flex-wrap gap-4">
-      <% 3.times do %>
-        <%= image_tag "https://via.placeholder.com/150x150?text=No+Image", class: "w-32 h-auto rounded shadow" %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<!-- Property Documents Section -->
-<div class="mb-8">
-  <h2 class="text-xl font-semibold mb-4">Property Documents</h2>
-
-  <% if @property.documents.any? %>
-    <div class="space-y-4">
-      <% @property.documents.each do |document| %>
-        <div class="border p-4 rounded shadow-sm">
-          <p class="font-medium mb-2"><%= document.document_type %></p>
-
-          <% if current_user.document_accesses.exists?(document_id: document.id, payment_status: 'paid') %>
-            <!-- If user has paid, show download link -->
-            <%= link_to "Download Document",
-                        rails_blob_path(document.file_url, disposition: "attachment"),
-                        class: "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 inline-block" %>
+          <% if main_image_url.present? %>
+            <img id="mainImage" src="<%= main_image_url %>" alt="Main Image" class="w-full object-cover cursor-pointer" data-zoomable>
           <% else %>
-            <!-- If not paid, show payment button -->
-            <p class="text-gray-700 mb-2">
-              To download this document, you need to pay 1% of property value (₹<%= number_with_delimiter((@property.price * 0.01).round(2)) %>).
-            </p>
-
-            <%= button_to "Pay & Download",
-                          document_accesses_path(property_id: @property.id, document_id: document.id),
-                          method: :post,
-                          class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+            <img src="https://via.placeholder.com/600x400?text=No+Image" alt="No Image" class="w-full object-cover">
           <% end %>
         </div>
-      <% end %>
+
+        <!-- Thumbnails Carousel -->
+        <div class="mt-4 relative">
+          <%# Gather all thumbnail images into a single array %>
+          <% thumbnails = [] %>
+
+          <% if @property.images.attached? %>
+            <% @property.images.each do |img| %>
+              <% thumbnails << { url: url_for(img) } %>
+            <% end %>
+          <% end %>
+
+          <% @property.images_table_records.each do |img_record| %>
+            <% if img_record.thumbnail.present? %>
+              <% thumbnails << { url: img_record.thumbnail } %>
+            <% end %>
+
+            <% (1..10).each do |i| %>
+              <% image_url = img_record.send("image#{i}_url") %>
+              <% thumbnails << { url: image_url } if image_url.present? %>
+            <% end %>
+          <% end %>
+
+          <%# Show left arrow only if thumbnails >= 4 %>
+          <% if thumbnails.size >= 4 %>
+            <button id="thumbPrev" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-black px-2 py-1 rounded-l z-10">&lt;</button>
+          <% end %>
+
+          <div id="thumbnailsContainer" class="overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <% thumbnails.each do |thumb| %>
+              <img src="<%= thumb[:url] %>"
+                   alt="Thumbnail"
+                   class="inline-block w-24 h-24 object-cover rounded shadow cursor-pointer mx-1"
+                   onclick="changeMainImage('<%= thumb[:url] %>')">
+            <% end %>
+          </div>
+
+          <%# Show right arrow only if thumbnails >= 4 %>
+          <% if thumbnails.size >= 4 %>
+            <button id="thumbNext" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 text-black px-2 py-1 rounded-r z-10">&gt;</button>
+          <% end %>
+        </div>
+      </div>
     </div>
-  <% else %>
-    <p class="text-gray-500">No documents uploaded for this property.</p>
-  <% end %>
+
+    <!-- Property Details -->
+    <div>
+      <div class="space-y-4 text-[#354041] font-mulish">
+        <p><strong>Description:</strong> <%= @property.description %></p>
+        <p><strong>Price:</strong> ₹<%= number_with_delimiter(@property.price) %></p>
+        <p><strong>Location:</strong> <%= @property.location %></p>
+        <p><strong>Type:</strong> <%= @property.property_type %></p>
+      </div>
+
+      <!-- Consultation button -->
+      <div class="mt-8">
+        <%= link_to "Request Consultation",
+                    new_property_consultation_request_path(@property),
+                    class: "bg-[#ccaa79] text-[#354041] px-6 py-3 rounded font-bold text-lg hover:bg-[#b8986a] inline-block" %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property Documents -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold mb-4 text-[#354041] font-manrope">Property Documents</h2>
+
+    <% if @property.documents.any? %>
+      <div class="space-y-4">
+        <% @property.documents.each do |document| %>
+          <div class="border p-4 rounded shadow-sm">
+            <p class="font-medium mb-2"><%= document.document_type %></p>
+
+            <% if current_user.document_accesses.exists?(document_id: document.id, payment_status: 'paid') %>
+              <%= link_to "Download Document",
+                          rails_blob_path(document.file_url, disposition: "attachment"),
+                          class: "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 inline-block" %>
+            <% else %>
+              <p class="text-gray-700 mb-2">
+                To download, pay 1% of property value (₹<%= number_with_delimiter((@property.price * 0.01).round(2)) %>).
+              </p>
+              <%= button_to "Pay & Download",
+                            document_accesses_path(property_id: @property.id, document_id: document.id),
+                            method: :post,
+                            class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500">No documents uploaded for this property.</p>
+    <% end %>
+  </div>
+
+  <!-- Edit and Back Buttons -->
+  <div class="mt-12 flex space-x-4">
+    <%= link_to 'Edit Property', edit_property_path(@property), class: "bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-600 inline-block" %>
+    <%= link_to 'Back to Properties', properties_path, class: "bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 inline-block" %>
+  </div>
 </div>
 
-<div class="mt-8">
-  <%= link_to 'Edit Property', edit_property_path(@property), class: "bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-600 inline-block" %>
-  <%= link_to 'Back to Properties', properties_path, class: "bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 inline-block ml-2" %>
-</div>
+<!-- JS functions -->
+<script>
+  function changeMainImage(url) {
+    document.getElementById('mainImage').src = url;
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('[data-zoomable]').forEach(img => {
+      img.addEventListener('click', function() {
+        const src = this.src;
+        const modalHTML = `
+          <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" id="zoomModal">
+            <div class="relative">
+              <button class="absolute top-0 right-0 mt-2 mr-2 text-white text-2xl font-bold" id="closeZoom">&times;</button>
+              <img src="${src}" class="max-h-screen max-w-screen rounded shadow-lg">
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        document.getElementById('closeZoom').addEventListener('click', function() {
+          document.getElementById('zoomModal').remove();
+        });
+
+        document.getElementById('zoomModal').addEventListener('click', function(e) {
+          if (e.target.id === 'zoomModal') {
+            document.getElementById('zoomModal').remove();
+          }
+        });
+      });
+    });
+
+    const container = document.getElementById('thumbnailsContainer');
+    const thumbPrev = document.getElementById('thumbPrev');
+    const thumbNext = document.getElementById('thumbNext');
+
+    if (thumbPrev && thumbNext) {
+      thumbPrev.addEventListener('click', () => {
+        container.scrollBy({ left: -200, behavior: 'smooth' });
+      });
+      thumbNext.addEventListener('click', () => {
+        container.scrollBy({ left: 200, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

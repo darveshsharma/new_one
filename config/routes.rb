@@ -20,12 +20,12 @@ post 'verify_razorpay_payment', to: 'membership_payments#verify_razorpay_payment
 resources :properties do
   resources :documents, only: [:create, :destroy]
   resources :consultation_requests, only: [:new, :create]
-  resources :document_accesses, only: [:create]
+  resources :document_accesses, only: [:new,:create]
 end
 
 
 # Consultation requests routes
-resources :consultation_requests, only: [:index, :show, :update]
+resources :consultation_requests, only: [:index, :new, :show, :update]
 
 # Home route
 get "home/index"

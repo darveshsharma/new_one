@@ -3,15 +3,13 @@ class PropertiesController < ApplicationController
   before_action :set_property, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_active_member, only: [:new, :create, :edit, :update, :destroy]
-  before_action only: [:edit, :update, :destroy] do
-    require_owner_of(@property)
-  end
-
+  
   def index
     @properties = Property.all
   end
 
   def show
+@image_records = @property.images
   end
 
   def new
