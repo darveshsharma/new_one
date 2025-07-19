@@ -10,7 +10,7 @@ class MembershipPaymentsController < ApplicationController
   end
 
   def create
-    amount = 10000 # example ₹100.00 in paise
+    amount = 10000 
 
     order = Razorpay::Order.create(
       amount: amount,
@@ -70,7 +70,7 @@ class MembershipPaymentsController < ApplicationController
 end
 
 def verify_razorpay_payment
-  # Fetch params
+  
   payment_id = params[:razorpay_payment_id]
   order_id = params[:razorpay_order_id]
   signature = params[:razorpay_signature]

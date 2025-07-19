@@ -1,50 +1,85 @@
 <nav class="bg-white shadow-md">
- <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-   <div class="flex justify-between items-center h-20">
-    
-     <!-- Logo -->
-     <div class="flex-shrink-0 flex items-center">
-       <%= link_to root_path do %>
-         <%= image_tag "hamara.png", alt: "Hamara Group Logo", class: "h-12 w-auto max-h-12 max-w-[140px] mr-3" %>
-       <% end %>
-       <%= link_to 'HamaraGroup', root_path, class: "text-2xl font-bold text-indigo-600" %>
-     </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
 
-     <!-- Menu Links -->
-     <div class="hidden sm:flex sm:space-x-8">
-       <% if user_signed_in? %>
-        
-         <% if current_user.admin? %>
-           <%= link_to 'Admin Dashboard', admin_root_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <%= link_to root_path do %>
+          <%= image_tag "hamara.png", alt: "Hamara Group Logo", class: "h-12 w-auto max-h-12 max-w-[140px] mr-3" %>
+        <% end %>
+        <%= link_to 'HamaraGroup', root_path, class: "text-2xl font-bold text-indigo-600" %>
+      </div>
 
-         <% else %>
-           <%= link_to 'Explore Properties', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-           <%= link_to 'Membership', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <!-- Desktop Menu Links -->
+      <div class="hidden sm:flex sm:space-x-8">
+        <% if user_signed_in? %>
+          <% if current_user.admin? %>
+            <%= link_to 'Admin Dashboard', admin_root_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <% else %>
+            <%= link_to 'Explore Properties', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+            <%= link_to 'Membership', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
 
-           <% if current_user.member %>
-             <%= link_to 'List Property', new_property_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-             <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-           <% else %>
-             <!-- Non-members see options but redirected to membership payment -->
-             <%= link_to 'List Property', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
-             <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
-           <% end %>
-         <% end %>
+            <% if current_user.membership_paid? %>
+              <%= link_to 'List Property', new_property_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+              <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+            <% else %>
+              <%= link_to 'List Property', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
+              <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
+            <% end %>
+          <% end %>
+          <%= link_to 'Logout', destroy_user_session_path, class: "text-red-500 px-3 py-2 rounded-md text-lg font-medium", method: :delete, data: { turbo: false } %>
+        <% else %>
+          <%= link_to 'Home', root_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Explore', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Login', new_user_session_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Register', new_user_registration_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+        <% end %>
+      </div>
 
-         <!-- Logout -->
-        <%= link_to 'Logout', destroy_user_session_path, class: "text-red-500 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false }, method: :delete %>
+      <!-- Mobile Menu Toggle Button -->
+      <div class="sm:hidden">
+        <button id="mobile-menu-button" class="text-3xl focus:outline-none">☰</button>
+      </div>
+    </div>
+  </div>
 
-       <% else %>
-         <%= link_to 'Home', root_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-         <%= link_to 'Explore', properties_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-         <%= link_to 'Consultation', new_membership_payment_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-         <%= link_to 'Login', new_user_session_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-         <%= link_to 'Register', new_user_registration_path, class: "text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
-       <% end %>
-     </div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden sm:hidden px-4 pb-4">
+    <% if user_signed_in? %>
+      <% if current_user.admin? %>
+        <%= link_to 'Admin Dashboard', admin_root_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <% else %>
+        <%= link_to 'Explore Properties', properties_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+        <%= link_to 'Membership', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
 
-     <!-- Mobile Menu Toggle -->
-     <button id="menu-toggle" class="sm:hidden text-3xl">☰</button>
-   </div>
- </div>
+        <% if current_user.membership_paid? %>
+          <%= link_to 'List Property', new_property_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+          <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+        <% else %>
+          <%= link_to 'List Property', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
+          <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium", data: { turbo: false } %>
+        <% end %>
+      <% end %>
+      <%= link_to 'Logout', destroy_user_session_path, class: "block text-red-500 px-3 py-2 rounded-md text-lg font-medium", method: :delete, data: { turbo: false } %>
+    <% else %>
+      <%= link_to 'Home', root_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <%= link_to 'Explore', properties_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <%= link_to 'Consultation', new_membership_payment_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <%= link_to 'Login', new_user_session_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+      <%= link_to 'Register', new_user_registration_path, class: "block text-gray-900 hover:text-indigo-600 px-3 py-2 rounded-md text-lg font-medium" %>
+    <% end %>
+  </div>
 </nav>
+
+<!-- Toggle script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById("mobile-menu-button");
+    const menu = document.getElementById("mobile-menu");
+
+    button.addEventListener("click", function() {
+      menu.classList.toggle("hidden");
+    });
+  });
+</script>
