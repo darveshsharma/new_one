@@ -1,4 +1,4 @@
-class AddFieldsToUsers < ActiveRecord::Migration[8.0]
+class AddFieldsToUsers < ActiveRecord::Migration[7.0]
   def change
     add_column :users, :role, :string
     add_column :users, :membership_status, :string

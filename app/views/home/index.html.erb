@@ -3,153 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hamara Group - Real Estate</title>
+  <title>Chandela Estates</title>
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com "></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Custom Styles -->
   <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: #fefefe;
-    }
-
-    .bg-dark-green {
-      background-color: #294b52;
-      color: white;
-    }
-
-    .text-dark-green {
-      color: #294b52;
-    }
-
-    .border-white {
-      border-color: white;
-    }
-
-    .submit-button {
-      background-color: transparent;
-      border: 2px solid white;
-      color: white;
-      padding: 1rem 2rem;
-      font-size: 1.25em;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
-
-    .submit-button:hover {
-      background-color: white;
-      color: #294b52;
-    }
-
-    .property-image {
-      border-radius: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'PT Serif', Helvetica, sans-serif;
     }
   </style>
 </head>
-<body class="bg-gray-100">
 
+<body class="relative">
+
+  <!-- Underlapping full-screen background image -->
+  <div class="fixed inset-0 -z-10">
+    <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3w0MTUzNjZ8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3VzZXxlbnwwfHx8fDE2OTU4NjgxODN8MA&auto=format&fit=crop&w=1470&q=80" alt="Background" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-black opacity-30"></div>
+  </div>
+
+  <div class="relative z-10">
+
+   <!-- First Section -->
+   <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 py-8 bg-[#354041]">
   
+    <!-- Logo -->
+    <%= image_tag "download.png", alt: "Hamara Group Logo", style: "width: 100%; height: 100%; max-width: 12rem; max-height: 12rem;", class: "mx-auto my-4" %>
 
-  <!-- Hero Section with Background Image -->
-<section class="relative text-white py-32 text-center">
-  <!-- Background image -->
-  <div class="absolute inset-0">
-    <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Property Background" class="w-full h-full object-cover"/>
-    <div class="absolute inset-0 bg-black opacity-30"></div> <!-- Optional overlay for text readability -->
-  </div>
+    <!-- Main Heading -->
+    <h1 class="font-[Manrope] text-[#ccaa79] text-[5em] leading-tight tracking-wide mb-5">
+      <strong>Real Estate Redefined</strong>
+    </h1>
 
-  <!-- Content -->
-  <div class="relative z-10 container mx-auto px-4">
-    <h1 class="text-5xl font-bold mb-4">Discover Your Ideal Home</h1>
-    <p class="text-lg mb-6">Explore Spaces Designed for You</p>
-    <%= link_to 'View Properties', properties_path, class: "bg-dark-green text-white px-6 py-3 rounded-lg text-xl font-bold hover:bg-white hover:text-dark-green transition duration-300" %>
+    <!-- Subheading -->
+    <p class="font-[Mulish] text-[#ccaa79] text-[1.875em] leading-snug mb-8">
+      We help you find the perfect home.
+    </p>
 
-  </div>
-</section>
+    <!-- Button -->
+    <a href="/properties"
+       class="bg-[#ccaa79] text-[#354041] px-5 py-4 font-bold text-[1.25em] rounded-md border-[5px] border-double border-[#354041] hover:bg-[#b48f5c] transition"
+       target="_blank">
+      VIEW PROPERTIES
+    </a>
 
+  </section>
 
-  <!-- Trusted Real Estate Partner Section -->
-  <section class="py-12 bg-white">
-  <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-    <!-- Left text content -->
-    <div>
-      <h2 class="text-4xl font-bold mb-4 text-dark-green">Trusted Real Estate Partner</h2>
-      <p class="text-lg text-gray-700">
-        We pride ourselves on delivering exceptional real estate services that prioritize client satisfaction and success.
-      </p>
-    </div>
+  <!-- Second Section (fully transparent) -->
+  <section class="min-h-screen flex flex-col justify-center items-center text-white px-4">
+    
+  </section>
 
-    <!-- Right image grid -->
-    <div class="grid grid-cols-2 gap-4">
-      <!-- Large vertical image -->
-      <div class="row-span-2">
-        <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Modern Home" class="rounded-2xl shadow-lg object-cover w-full h-full" />
+  <!-- Third Section: Featured Properties (matched green) -->
+  <section class="py-20 bg-[#354041] text-[#d6ad72]">
+    <h2 class="text-4xl font-bold text-center mb-12">Featured Properties</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+      <div class="text-center">
+        <img src="PROPERTY1_URL" alt="Property 1" class="rounded-lg mb-4">
+        <h3 class="text-xl font-semibold">12 Country Road, Country</h3>
+        <p>2 Bedroom · 1 Bathroom</p>
       </div>
-
-      <!-- Top small image -->
-      <div>
-        <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kitchen Interior" class="rounded-2xl shadow-lg object-cover w-full h-full" />
+      <div class="text-center">
+        <img src="PROPERTY2_URL" alt="Property 2" class="rounded-lg mb-4">
+        <h3 class="text-xl font-semibold">34 Sunnyside Avenue, Country</h3>
+        <p>4 Bedroom · 3 Bathroom</p>
       </div>
-
-      <!-- Bottom small image -->
-      <div>
-        <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bedroom Interior" class="rounded-2xl shadow-lg object-cover w-full h-full" />
+      <div class="text-center">
+        <img src="PROPERTY3_URL" alt="Property 3" class="rounded-lg mb-4">
+        <h3 class="text-xl font-semibold">56 Greenfields Road, Country</h3>
+        <p>3 Bedroom · 2 Bathroom</p>
       </div>
-    </div>
-  </div>
-</section>
-
-
-  <!-- Contact Form Section -->
-  <section class="bg-dark-green py-12">
-    <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-center mb-8 text-white">Let's Find Your Perfect Place</h2>
-      <p class="text-lg text-center mb-8 text-white">
-        Let's discuss your real estate goals. Contact us for a consultation.
-      </p>
-      <form class="max-w-md mx-auto">
-        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="text" placeholder="First name*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
-          <input type="text" placeholder="Last name*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
-        </div>
-        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="email" placeholder="Email address*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
-          <input type="tel" placeholder="Phone number*" class="w-full p-3 border border-white focus:border-blue-500 rounded" required />
-        </div>
-        <textarea placeholder="Message*" rows="4" class="w-full p-3 border border-white focus:border-blue-500 rounded mb-4" required></textarea>
-        <button type="submit" class="submit-button">Submit</button>
-      </form>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-white py-6">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <div class="flex items-center">
-          <%= image_tag "hamara.png", alt: "Hamara Group Logo", class: "h-16 w-auto mr-4" %>
-        <p class="text-sm">© 2024. All Rights Reserved.</p>
+  <!-- Fourth Section: Client Testimonials (unchanged) -->
+  <section class="py-20 bg-[#d6ad72] text-[#354041]">
+    <h2 class="text-4xl font-bold text-center mb-12">Client Testimonials</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+      <div class="text-center italic">
+        <p>"They patiently explained everything, answered all my questions, and helped me find a house that fit both my budget and my lifestyle."</p>
+        <p class="mt-4 font-bold">Jessica K.</p>
       </div>
-      <div class="flex space-x-4">
-        <a href="#" class="text-dark-green hover:text-blue-500">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-            <path d="M7.878 4.878A5.5 5.5 0 002 10.5c0 2.757 2.243 5 5 5 1.932 0 3.512-1.087 4.538-2.707l-1.887-.894a1 1 0 01-.894-.553H11v-2h2.886zM7.5 14.25a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0z" />
-          </svg>
-        </a>
-        <a href="#" class="text-dark-green hover:text-blue-500">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-            <path d="M24 4.557c-.883.389-1.763.68-2.644.893.714.714 1.78 1.065 2.831 1.065 1.955 0 3.322-1.384 3.322-3.313 0-.87-.378-1.65-1.112-2.36.678-.24 1.329-.379 2.003-.379 2.718 0 5.195 1.946 5.195 5.457 0 3.865-2.313 7.184-5.777 8.568-.378.265-.813.41-1.238.41-.369 0-.79-.143-1.238-.41-.475-.287-.852-.72-.948-1.238H14.25V9.25a.25.25 0 01.25-.25h2.458A2.5 2.5 0 0119.5 10c0 .694-.25 1.381-.707 1.982l3.15 3.15a.25.25 0 010 .353h-.001c-.001 0-.001 0-.002 0a.25.25 0 01-.352 0l-3.15-3.15a.25.25 0 010-.352zM10 20.5c-5.523 0-10-4.477-10-10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z" />
-          </svg>
-        </a>
-        <a href="#" class="text-dark-green hover:text-blue-500">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-            <path d="M24 4.557c-.883.389-1.763.68-2.644.893.714.714 1.78 1.065 2.831 1.065 1.955 0 3.322-1.384 3.322-3.313 0-.87-.378-1.65-1.112-2.36.678-.24 1.329-.379 2.003-.379 2.718 0 5.195 1.946 5.195 5.457 0 3.865-2.313 7.184-5.777 8.568-.378.265-.813.41-1.238.41-.369 0-.79-.143-1.238-.41-.475-.287-.852-.72-.948-1.238H14.25V9.25a.25.25 0 01.25-.25h2.458A2.5 2.5 0 0119.5 10c0 .694-.25 1.381-.707 1.982l3.15 3.15a.25.25 0 010 .353h-.001c-.001 0-.001 0-.002 0a.25.25 0 01-.352 0l-3.15-3.15a.25.25 0 010-.352zM10 20.5c-5.523 0-10-4.477-10-10S4.477 0 10 0s10 4.477 10 10-4.477 10-10 10z" />
-          </svg>
-        </a>
+      <div class="text-center italic">
+        <p>"They were also excellent negotiators and secured a great offer for me. I highly recommend them to anyone looking to sell their home quickly and efficiently."</p>
+        <p class="mt-4 font-bold">Leon Y.</p>
+      </div>
+      <div class="text-center italic">
+        <p>"Their expertise in the local market is invaluable, and their dedication to their clients is unmatched."</p>
+        <p class="mt-4 font-bold">Clint E.</p>
       </div>
     </div>
+  </section>
+
+  <!-- Footer (matched green) -->
+  <footer class="bg-[#354041] text-[#d6ad72] py-6 text-center">
+    <p>© 2024 Chandela Estates. All Rights Reserved.</p>
   </footer>
+
+  </div>
+
 </body>
 </html>

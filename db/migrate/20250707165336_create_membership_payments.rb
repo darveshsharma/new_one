@@ -1,4 +1,4 @@
-class CreateMembershipPayments < ActiveRecord::Migration[8.0]
+class CreateMembershipPayments < ActiveRecord::Migration[7.0]
   def change
     create_table :membership_payments do |t|
       t.references :user, null: false, foreign_key: true

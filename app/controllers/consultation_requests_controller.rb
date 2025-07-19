@@ -1,6 +1,7 @@
 class ConsultationRequestsController < ApplicationController
   before_action :set_property, only: [:new, :create]
-  before_action :require_active_member
+  before_action :authenticate_user!
+ before_action :require_membership
 
   def index
     @consultation_requests = current_user.consultation_requests

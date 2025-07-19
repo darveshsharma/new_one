@@ -1,7 +1,8 @@
 class PropertiesController < ApplicationController
   layout 'application'
   before_action :set_property, only: [:show, :edit, :update, :destroy]
-  before_action :require_active_member, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :require_membership, only: [:new, :create, :edit, :update, :destroy]
   before_action only: [:edit, :update, :destroy] do
     require_owner_of(@property)
   end

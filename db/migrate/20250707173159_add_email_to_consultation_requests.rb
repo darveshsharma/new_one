@@ -1,4 +1,4 @@
-class AddEmailToConsultationRequests < ActiveRecord::Migration[8.0]
+class AddEmailToConsultationRequests < ActiveRecord::Migration[7.0]
   def change
     add_column :consultation_requests, :email, :string
     add_column :consultation_requests, :full_name, :string

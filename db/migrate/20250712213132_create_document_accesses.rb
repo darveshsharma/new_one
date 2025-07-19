@@ -1,4 +1,4 @@
-class CreateDocumentAccesses < ActiveRecord::Migration[8.0]
+class CreateDocumentAccesses < ActiveRecord::Migration[7.0]
   def change
     create_table :document_accesses do |t|
       t.references :user, null: false, foreign_key: true
