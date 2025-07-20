@@ -56,7 +56,7 @@ class MembershipPaymentsController < ApplicationController
         member: true
       )
 
-      MembershipMailer.confirmation(current_user).deliver_now
+    MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
 
       redirect_to root_path, notice: "Payment successful. Membership activated."
     rescue Razorpay::Errors::SignatureVerificationError
@@ -105,6 +105,7 @@ class MembershipPaymentsController < ApplicationController
         membership_paid_at: Time.current,
         member: true
       )
+    MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
 
       render json: { success: true }
     rescue => e
