@@ -39,8 +39,7 @@ RUN apt-get update -qq && \
 COPY Gemfile Gemfile.lock ./
 
 # Install gems
-RUN bundle install && \
-    rm -rf ~/.bundle /usr/local/bundle/ruby/*/cache
+RUN bundle install
 
 # Copy rest of the application
 COPY . .
