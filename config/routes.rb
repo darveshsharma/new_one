@@ -1,34 +1,45 @@
 Rails.application.routes.draw do
-root 'home#index'
-devise_scope :user do
-  get 'users/sign_out', to: 'devise/sessions#destroy'
-end
-# Devise routes for users and admin_users
-devise_for :users
-devise_for :admin_users, ActiveAdmin::Devise.config
+  get 'profiles/edit'
+  get 'profiles/update'
+  root 'home#index'
 
-# ActiveAdmin routes
-ActiveAdmin.routes(self)
+  # Devise sign-out route override
+  devise_scope :user do
+    get 'users/sign_out', to: 'devise/sessions#destroy'
+  end
 
-# Membership payments
-resources :membership_payments, only: [:new, :create]
-post 'create_razorpay_order', to: 'membership_payments#create_razorpay_order'
-post 'verify_razorpay_payment', to: 'membership_payments#verify_razorpay_payment'
+  # Devise routes for users and admin_users
+  devise_for :users
+  devise_for :admin_users, ActiveAdmin::Devise.config
 
+  # ActiveAdmin routes
+  ActiveAdmin.routes(self)
 
-# Properties and nested resources
-resources :properties do
-  resources :documents, only: [:create, :destroy]
+  # Membership payments
+  resources :membership_payments, only: [:new, :create, :show]
+  post 'create_razorpay_order', to: 'membership_payments#create_razorpay_order'
+  post 'verify_razorpay_payment', to: 'membership_payments#verify_razorpay_payment'
+
+  # Properties and nested resources
+  resources :properties do
+member do
+    get :download_documents
+  end
+
+    resources :documents, only: [:create, :destroy]
+    resources :consultation_requests, only: [:new, :create]
+    resources :document_accesses, only: [:new, :create]
+     resources :payments do
+    post 'verify', on: :member  # will need payment ID in route
+  end
+  end
+
+  # Global consultation requests
   resources :consultation_requests, only: [:new, :create]
-  resources :document_accesses, only: [:new,:create]
-end
+  # config/routes.rb
+resource :profile, only: [:edit, :update]
 
 
-# Consultation requests routes
-resources :consultation_requests, only: [:index, :new, :show, :update]
-
-# Home route
-get "home/index"
-
-
+  # Home
+  get "home/index"
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_19_181145) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_29_154335) do
   create_table "active_admin_comments", charset: "utf8mb3", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -164,6 +164,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_19_181145) do
     t.index ["user_id"], name: "index_properties_on_user_id"
   end
 
+  create_table "property_payments", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.integer "amount"
+    t.string "payment_gateway"
+    t.string "transaction_id"
+    t.string "payment_status"
+    t.string "razorpay_order_id"
+    t.datetime "paid_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "razorpay_payment_id"
+    t.index ["property_id"], name: "index_property_payments_on_property_id"
+    t.index ["user_id"], name: "index_property_payments_on_user_id"
+  end
+
   create_table "test_enums", charset: "utf8mb3", force: :cascade do |t|
     t.integer "status"
     t.datetime "created_at", null: false
@@ -183,6 +199,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_19_181145) do
     t.datetime "membership_paid_at"
     t.integer "role"
     t.boolean "member", default: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.string "address"
+    t.boolean "profile_completed", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -198,4 +219,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_19_181145) do
   add_foreign_key "images", "properties"
   add_foreign_key "membership_payments", "users"
   add_foreign_key "properties", "users"
+  add_foreign_key "property_payments", "properties"
+  add_foreign_key "property_payments", "users"
 end

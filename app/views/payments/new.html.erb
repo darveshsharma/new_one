@@ -1,0 +1,39 @@
+<!-- app/views/payments/new.html.erb -->
+<h2>Pay ₹<%= @amount %> to download property documents</h2>
+
+<div id="razorpay-button"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = {
+    "key": "<%= Rails.application.credentials.dig(:razorpay, :key_id) %>",
+    "amount": "<%= (@amount * 100).to_i %>",
+    "currency": "INR",
+    "name": "Real Estate Portal",
+    "description": "Document Download Fee",
+    "order_id": "<%= @razorpay_order_id %>",
+    "handler": function (response){
+fetch("<%= verify_property_payment_path(@property, @payment) %>", {
+        method: 'POST',
+        headers: {
+          "X-CSRF-Token": "<%= form_authenticity_token %>",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_order_id: response.razorpay_order_id
+        })
+      }).then(() => {
+        window.location.href = "<%= property_path(@property) %>";
+      });
+    },
+    "prefill": {
+      "email": "<%= current_user.email %>"
+    },
+    "theme": {
+      "color": "#3399cc"
+    }
+  };
+  var rzp = new Razorpay(options);
+  rzp.open();
+</script>

@@ -2,11 +2,13 @@ class ConsultationRequest < ApplicationRecord
   belongs_to :user
   belongs_to :property, optional: true
 
-  has_one_attached :mutation_document
-has_many_attached :supporting_documents
+  validates :first_name, :last_name, :email, :phone_number, :description, presence: true
 
 
-  validates :service_type, :summary, presence: true
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 
   def self.ransackable_associations(auth_object = nil)
     %w[user property]

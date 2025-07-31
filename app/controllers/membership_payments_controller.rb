@@ -10,18 +10,15 @@ class MembershipPaymentsController < ApplicationController
   end
 
   def create
-    amount = 10_000 * 100
-    order = Razorpay::Order.create(
-      amount: amount,
-      currency: 'INR',
-      receipt: "receipt_#{SecureRandom.hex(5)}",
-      payment_capture: 1
-    )
+    amount = 10_000 # ₹10,000
+    receipt = "membership_#{SecureRandom.hex(5)}"
 
+    razorpay_service = RazorpayService.new
+    order = razorpay_service.create_order(amount: amount, receipt: receipt)
     @order_id = order.id
 
     @membership_payment = current_user.membership_payments.create!(
-      amount: amount / 100, 
+      amount: amount,
       payment_gateway: "Razorpay",
       payment_status: "pending",
       razorpay_order_id: @order_id
@@ -36,43 +33,42 @@ class MembershipPaymentsController < ApplicationController
     signature = params[:razorpay_signature]
 
     begin
-      Razorpay::Utility.verify_payment_signature(
-        razorpay_order_id: order_id,
-        razorpay_payment_id: payment_id,
-        razorpay_signature: signature
-      )
+      razorpay_service = RazorpayService.new
+      is_valid = razorpay_service.verify_payment_signature(order_id, payment_id, signature)
 
-      membership_payment = MembershipPayment.find_by(razorpay_order_id: order_id)
-      membership_payment.update!(
-        payment_status: "success",
-        transaction_id: payment_id,
-        paid_at: Time.current
-      )
+      if is_valid
+        membership_payment = MembershipPayment.find_by(razorpay_order_id: order_id)
+        membership_payment.update!(
+          payment_status: "success",
+          transaction_id: payment_id,
+          paid_at: Time.current
+        )
 
-      current_user.update!(
-        membership_status: "active",
-        membership_paid: true,
-        membership_paid_at: Time.current,
-        member: true
-      )
+        current_user.update!(
+          membership_status: "active",
+          membership_paid: true,
+          membership_paid_at: Time.current,
+          member: true
+        )
 
-    MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
+        MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
 
-      redirect_to root_path, notice: "Payment successful. Membership activated."
-    rescue Razorpay::Errors::SignatureVerificationError
-      redirect_to root_path, alert: "Payment verification failed."
+        redirect_to root_path, notice: "Payment successful. Membership activated."
+      else
+        redirect_to root_path, alert: "Payment verification failed."
+      end
+    rescue => e
+      Rails.logger.error("Payment verification error: #{e.message}")
+      redirect_to root_path, alert: "Payment verification error occurred."
     end
   end
 
   def create_razorpay_order
-    amount = 10_000 * 100 
+    amount = 10_000
+    receipt = "membership_#{SecureRandom.hex(5)}"
 
-    order = Razorpay::Order.create(
-      amount: amount,
-      currency: 'INR',
-      receipt: "receipt_#{SecureRandom.hex(5)}",
-      payment_capture: 1
-    )
+    razorpay_service = RazorpayService.new
+    order = razorpay_service.create_order(amount: amount, receipt: receipt)
 
     render json: { id: order.id, amount: order.amount }
   end
@@ -84,34 +80,39 @@ class MembershipPaymentsController < ApplicationController
     signature = data[:razorpay_signature]
 
     begin
-      Razorpay::Utility.verify_payment_signature({
-        razorpay_order_id: order_id,
-        razorpay_payment_id: payment_id,
-        razorpay_signature: signature
-      })
+      razorpay_service = RazorpayService.new
+      is_valid = razorpay_service.verify_payment_signature(order_id, payment_id, signature)
 
-      membership_payment = current_user.membership_payments.create!(
-        amount: 10_000, # ₹10,000
-        payment_gateway: 'Razorpay',
-        transaction_id: payment_id,
-        payment_status: 'success',
-        paid_at: Time.current,
-        razorpay_order_id: order_id
-      )
+      if is_valid
+        membership_payment = current_user.membership_payments.create!(
+          amount: 10_000,
+          payment_gateway: 'Razorpay',
+          transaction_id: payment_id,
+          payment_status: 'success',
+          paid_at: Time.current,
+          razorpay_order_id: order_id
+        )
 
-      current_user.update!(
-        membership_status: 'active',
-        membership_paid: true,
-        membership_paid_at: Time.current,
-        member: true
-      )
-    MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
+        current_user.update!(
+          membership_status: 'active',
+          membership_paid: true,
+          membership_paid_at: Time.current,
+          member: true
+        )
 
-      render json: { success: true }
+        MembershipEmailJob.perform_later(current_user.id, membership_payment.id)
+
+        render json: { success: true }
+      else
+        render json: { success: false, error: "Invalid signature" }
+      end
     rescue => e
       Rails.logger.error "Payment verification failed: #{e.message}"
       render json: { success: false, error: e.message }
     end
+  end
+
+  def show 
   end
 
   private

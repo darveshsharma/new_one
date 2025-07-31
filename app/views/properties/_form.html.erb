@@ -1,8 +1,8 @@
-<%= form_with(model: property, local: true, html: { multipart: true }) do |form| %>
+<%= form_with(model: property, local: true, html: { multipart: true, class: "space-y-6 bg-white p-6 rounded shadow-md" }) do |form| %>
   <% if property.errors.any? %>
-    <div class="mb-4">
-      <h2 class="text-red-600 text-lg font-semibold">Errors:</h2>
-      <ul class="list-disc pl-5">
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+      <p class="font-bold">There were errors with your submission:</p>
+      <ul class="list-disc list-inside mt-2">
         <% property.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -10,50 +10,161 @@
     </div>
   <% end %>
 
-  <div class="mb-4">
-    <%= form.label :title, class: "block font-semibold" %>
-    <%= form.text_field :title, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <%= form.hidden_field :user_id, value: current_user.id %>
+
+    <div>
+      <%= form.label :title, class: "block font-semibold mb-1" %>
+      <%= form.text_field :title, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div class="md:col-span-2">
+      <%= form.label :description, class: "block font-semibold mb-1" %>
+      <%= form.text_area :description, rows: 3, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :property_type, class: "block font-semibold mb-1" %>
+      <%= form.text_field :property_type, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :subtype, class: "block font-semibold mb-1" %>
+      <%= form.text_field :subtype, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :location, class: "block font-semibold mb-1" %>
+      <%= form.text_field :location, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :price, class: "block font-semibold mb-1" %>
+      <%= form.number_field :price, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :dispute_status, class: "block font-semibold mb-1" %>
+      <%= form.text_field :dispute_status, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :dispute_summary, class: "block font-semibold mb-1" %>
+      <%= form.text_area :dispute_summary, rows: 2, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <% if current_user.admin? %>
+  <div>
+    <%= form.label :status, class: "block font-semibold mb-1" %>
+    <%= form.select :status, ['available', 'sold', 'pending'], prompt: "Select status", class: "w-full border border-gray-300 rounded p-2" %>
   </div>
 
-  <div class="mb-4">
-    <%= form.label :description, class: "block font-semibold" %>
-    <%= form.text_area :description, rows: 3, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  <div>
+    <%= form.label :approved, class: "block font-semibold mb-1" %>
+    <%= form.check_box :approved, class: "mr-2" %> Approved
+  </div>
+<% end %>
+
+
+    <div>
+      <%= form.label :ownership_type, class: "block font-semibold mb-1" %>
+      <%= form.text_field :ownership_type, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :total_area, class: "block font-semibold mb-1" %>
+      <%= form.text_field :total_area, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :jamabandi_year, class: "block font-semibold mb-1" %>
+      <%= form.number_field :jamabandi_year, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div class="md:col-span-2">
+      <%= form.label :boundaries, class: "block font-semibold mb-1" %>
+      <%= form.text_area :boundaries, rows: 2, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
   </div>
 
-  <div class="mb-4">
-    <%= form.label :price, class: "block font-semibold" %>
-    <%= form.number_field :price, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  <!-- Images Section -->
+  <div class="pt-6 border-t">
+    <h3 class="text-lg font-semibold mb-4">Images</h3>
+
+    <div class="mb-4">
+      <%= form.label :main_image_url, "Main Image URL", class: "block font-semibold mb-1" %>
+      <%= form.text_field :main_image_url, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :main_image, "Main Image File", class: "block font-semibold mb-1" %>
+      <% if property.main_image.attached? %>
+        <div class="mb-2">
+          <img src="<%= url_for(property.main_image) %>" class="h-24 object-cover rounded" />
+        </div>
+      <% end %>
+      <%= form.file_field :main_image, class: "w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :thumbnail_url, "Thumbnail URL", class: "block font-semibold mb-1" %>
+      <%= form.text_field :thumbnail_url, class: "w-full border border-gray-300 rounded p-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :thumbnail, "Thumbnail File", class: "block font-semibold mb-1" %>
+      <% if property.thumbnail.attached? %>
+        <div class="mb-2">
+          <img src="<%= url_for(property.thumbnail) %>" class="h-24 object-cover rounded" />
+        </div>
+      <% end %>
+      <%= form.file_field :thumbnail, class: "w-full" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :images, "Gallery Images", class: "block font-semibold mb-1" %>
+      <% if property.images.attached? %>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <% property.images.each do |img| %>
+            <img src="<%= url_for(img) %>" class="h-20 w-20 object-cover rounded" />
+          <% end %>
+        </div>
+      <% end %>
+      <%= form.file_field :images, multiple: true, class: "w-full" %>
+    </div>
   </div>
 
-  <div class="mb-4">
-    <%= form.label :location, class: "block font-semibold" %>
-    <%= form.text_field :location, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
+  <!-- Documents Section -->
+  <div class="pt-6 border-t">
+    <h3 class="text-lg font-semibold mb-4">Documents</h3>
+
+    <% {
+      title_document_files: "Title Documents",
+      mutation_document_files: "Mutation Documents",
+      aksfard_document_files: "Aksfard Documents",
+      court_case_document_files: "Court Case Documents",
+      supporting_documents: "Supporting Documents"
+    }.each do |field, label| %>
+      <div class="mb-4">
+        <%= form.label field, label, class: "block font-semibold mb-1" %>
+
+        <% if property.send(field).attached? %>
+          <ul class="mb-2 list-disc list-inside text-sm text-blue-700">
+            <% property.send(field).each do |doc| %>
+              <li>
+                <%= link_to doc.filename.to_s, url_for(doc), target: "_blank", class: "hover:underline" %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <%= form.file_field field, multiple: true, class: "w-full" %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="mb-4">
-    <%= form.label :property_type, class: "block text-gray-700" %>
-    <%= form.select :property_type, ['Residential', 'Commercial', 'Industrial'], prompt: "Select type", class: "border rounded w-full py-2 px-3" %>
-  </div>
-
-  <!-- Main Image -->
-  <div class="mb-4">
-    <%= form.label :main_image, class: "block font-semibold" %>
-    <%= form.file_field :main_image, class: "mt-1 block w-full" %>
-  </div>
-
-  <!-- Thumbnail -->
-  <div class="mb-4">
-    <%= form.label :thumbnail, class: "block font-semibold" %>
-    <%= form.file_field :thumbnail, class: "mt-1 block w-full" %>
-  </div>
-
-  <!-- Gallery Images -->
-  <div class="mb-4">
-    <%= form.label :images, "Gallery Images", class: "block font-semibold" %>
-    <%= form.file_field :images, multiple: true, class: "mt-1 block w-full" %>
-  </div>
-
-  <div class="mt-6">
-    <%= form.submit class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
+  <!-- Submit Button -->
+  <div class="pt-6 border-t">
+    <%= form.submit "#{property.persisted? ? 'Update' : 'Submit'} Property", class: "bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded" %>
   </div>
 <% end %>

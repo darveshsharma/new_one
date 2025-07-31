@@ -16,7 +16,6 @@ ActiveAdmin.register User do
 
   filter :email
   filter :role
-  filter :membership_status
   filter :membership_paid
   filter :membership_paid_at
   filter :created_at
