@@ -3,7 +3,7 @@ ActiveAdmin.register Property do
                 :dispute_status, :dispute_summary, :status, :approved,
                 :ownership_type, :total_area, :jamabandi_year, :boundaries,
                 :main_image_url, :thumbnail_url,
-                :main_image, :thumbnail,
+                :main_image, :thumbnail,:featured,
                 images: [], title_document_files: [], mutation_document_files: [],
                 aksfard_document_files: [], court_case_document_files: [], supporting_documents: []
 
@@ -36,6 +36,7 @@ filter :updated_at
       f.input :dispute_summary
       f.input :status
       f.input :approved
+      f.input :featured
       f.input :ownership_type
       f.input :total_area
       f.input :jamabandi_year
