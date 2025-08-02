@@ -3,12 +3,12 @@ class Property < ApplicationRecord
   belongs_to :user
   has_many :images, dependent: :destroy
 
-  with_options unless: :persisted_document_attached? do
-    validates :title_document_files, presence: { message: "must be attached" }
-    validates :mutation_document_files, presence: { message: "must be attached" }
-    validates :aksfard_document_files, presence: { message: "must be attached" }
-    validates :court_case_document_files, presence: { message: "must be attached" }
-  end
+  # with_options unless: :persisted_document_attached? do
+  #   validates :title_document_files, presence: { message: "must be attached" }
+  #   validates :mutation_document_files, presence: { message: "must be attached" }
+  #   validates :aksfard_document_files, presence: { message: "must be attached" }
+  #   validates :court_case_document_files, presence: { message: "must be attached" }
+  # end
 
 
   scope :featured, -> { where(featured: true) }

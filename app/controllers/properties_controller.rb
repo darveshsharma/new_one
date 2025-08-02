@@ -12,7 +12,28 @@ class PropertiesController < ApplicationController
 
   def index
     @properties = Property.all
+  
+    if params[:query].present?
+      @properties = @properties.where("title ILIKE ? OR location ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
+    end
+  
+    if params[:property_type].present?
+      @properties = @properties.where(property_type: params[:property_type])
+    end
+  
+    if params[:min_price].present?
+      @properties = @properties.where("price >= ?", params[:min_price].to_i)
+    end
+  
+    if params[:max_price].present?
+      @properties = @properties.where("price <= ?", params[:max_price].to_i)
+    end
+  
+    if params[:legal_status].present?
+      @properties = @properties.where(legal_status: params[:legal_status])
+    end
   end
+  
 
   def show
     @has_paid = current_user && PropertyPayment.exists?(
