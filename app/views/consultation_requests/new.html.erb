@@ -1,57 +1,79 @@
 <section class="flex flex-col md:flex-row bg-[#ccaa79]">
   <!-- Left Image -->
   <div class="md:w-1/2 w-full">
-    <img src="https://images.unsplash.com/photo-1656992469966-f046fa50420a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjQzOTV8MHwxfHNlYXJjaHw3MXx8aG91c2UlMjByZW5kZXJ8ZW58MHx8fHwxNzI0MjA4MDAyfDA&ixlib=rb-4.0.3&q=80&w=1080"
+    <img src="https://images.unsplash.com/photo-1656992469966-f046fa50420a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
          alt="Consultation"
          class="object-cover w-full h-full aspect-square" />
   </div>
 
   <!-- Right Form Section -->
   <div class="md:w-1/2 w-full flex flex-col justify-center px-8 py-12 text-[#354041] font-[Manrope]">
-    <h1 class="text-center text-[3.75em] font-bold leading-tight tracking-[0.017em] mb-4">Get in Touch</h1>
-    <p class="text-center text-[1.5625em] font-[Mulish] leading-snug mb-8">Reach out to our team and we'll be happy to assist you.</p>
+    
+    <!-- Headline -->
+    <p class="text-center text-lg italic mb-4">All cases are handled with full discretion by our senior legal and field teams.</p>
+    
+    <!-- Title -->
+    <h1 class="text-center text-[2.5em] font-bold leading-tight tracking-wide mb-4">
+      Request Property Consultation or Legal Support
+    </h1>
 
     <% if flash[:notice] %>
       <div id="flash-message" class="col-span-1 md:col-span-2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center transition-opacity duration-500">
         <strong><%= flash[:notice] %></strong>
       </div>
-
       <script>
         setTimeout(function() {
           const flashMsg = document.getElementById('flash-message');
           if (flashMsg) {
             flashMsg.style.opacity = '0';
-            setTimeout(() => flashMsg.remove(), 500); // Remove after fade out
+            setTimeout(() => flashMsg.remove(), 500);
           }
-        }, 2000); // Show for 2 seconds
+        }, 2000);
       </script>
     <% end %>
 
-
+    <!-- Form -->
     <%= form_with url: consultation_requests_path, scope: :consultation_request, local: true, html: { class: "grid grid-cols-1 md:grid-cols-2 gap-4" } do |f| %>
 
-      <div class="col-span-1">
-        <%= f.text_field :first_name, placeholder: "First name*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
-      </div>
-
-      <div class="col-span-1">
-        <%= f.text_field :last_name, placeholder: "Last name*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
-      </div>
-
+      <!-- Full Name -->
       <div class="col-span-1 md:col-span-2">
-        <%= f.email_field :email, placeholder: "Email address*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+        <%= f.text_field :full_name, placeholder: "Full Name*", class: "bg-white border border-gray-500 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner focus:outline-none focus:border-gray-600" %>
       </div>
 
+      <!-- Phone Number -->
       <div class="col-span-1 md:col-span-2">
-        <%= f.telephone_field :phone_number, placeholder: "Phone number*", class: "bg-white border border-gray-500 focus:border-gray-600 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner transition-colors duration-300 ease-out focus:outline-none" %>
+        <%= f.telephone_field :phone_number, placeholder: "Phone Number*", class: "bg-white border border-gray-500 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner focus:outline-none focus:border-gray-600" %>
       </div>
 
+      <!-- Email -->
       <div class="col-span-1 md:col-span-2">
-        <%= f.text_area :message, placeholder: "Message*", rows: 4, class: "bg-white border border-gray-500 focus:border-gray-600 py-3.5 rounded text-gray-700 w-full text-base px-4 shadow-inner resize-none transition-colors duration-300 ease-out focus:outline-none" %>
+        <%= f.email_field :email, placeholder: "Email Address*", class: "bg-white border border-gray-500 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner focus:outline-none focus:border-gray-600" %>
       </div>
 
+      <!-- Location -->
       <div class="col-span-1 md:col-span-2">
-        <%= f.submit "INQUIRE NOW", class: "w-full px-8 py-3 bg-[#ccaa79] text-[#354041] font-bold text-[1.25em] rounded border-[5px] border-double border-[#354041] hover:bg-[#b48f5c] transition" %>
+        <%= f.text_field :location, placeholder: "Location of Property*", class: "bg-white border border-gray-500 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner focus:outline-none focus:border-gray-600" %>
+      </div>
+
+      <!-- Type of Service Dropdown -->
+      <div class="col-span-1 md:col-span-2">
+        <%= f.select :service_type, ["Property Consultation", "Legal Support", "Dispute Resolution", "Property Valuation", "Other"], { prompt: "Select Type of Service*" }, class: "bg-white border border-gray-500 py-2 rounded text-gray-700 w-full text-base px-4 shadow-inner focus:outline-none focus:border-gray-600" %>
+      </div>
+
+      <!-- Short Description -->
+      <div class="col-span-1 md:col-span-2">
+        <%= f.text_area :description, placeholder: "Short Description / Case Summary*", rows: 4, class: "bg-white border border-gray-500 py-3 rounded text-gray-700 w-full text-base px-4 shadow-inner resize-none focus:outline-none focus:border-gray-600" %>
+      </div>
+
+      <!-- File Upload -->
+      <div class="col-span-1 md:col-span-2">
+        <%= f.file_field :supporting_documents, multiple: true, accept: "application/pdf,image/*", class: "block w-full text-sm text-gray-700 border border-gray-500 rounded cursor-pointer bg-white shadow-inner focus:outline-none focus:border-gray-600" %>
+        <p class="text-xs text-gray-600 mt-1">Optional – PDF or Image</p>
+      </div>
+
+      <!-- Submit -->
+      <div class="col-span-1 md:col-span-2">
+        <%= f.submit "Request Support", class: "w-full px-8 py-3 bg-[#ccaa79] text-[#354041] font-bold text-lg rounded border-4 border-double border-[#354041] hover:bg-[#b48f5c] transition" %>
       </div>
 
     <% end %>
