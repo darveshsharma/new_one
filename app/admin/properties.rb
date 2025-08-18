@@ -21,69 +21,108 @@ filter :jamabandi_year
 filter :created_at
 filter :updated_at
 
-  form html: { multipart: true } do |f|
-    f.semantic_errors
 
-    f.inputs 'Basic Details' do
-      f.input :user
-      f.input :title
-      f.input :description
-      f.input :property_type
-      f.input :subtype
-      f.input :location
-      f.input :price
-      f.input :dispute_status
-      f.input :dispute_summary
-      f.input :status
-      f.input :approved
-      f.input :featured
-      f.input :ownership_type
-      f.input :total_area
-      f.input :jamabandi_year
-      f.input :boundaries
-    end
 
-    f.inputs 'Main Image' do
-      if f.object.main_image.attached?
-        div do
-          image_tag url_for(f.object.main_image), style: 'max-width: 200px;'
-        end
+form html: { multipart: true, class: "property-form" } do |f|
+  f.semantic_errors
+
+  f.inputs '🏠 Basic Property Details' do
+    f.input :user, as: :select,
+                   collection: User.all.map { |u| [u.email, u.id] },
+                   prompt: "Select User by Email"
+  
+    f.input :title, placeholder: "e.g., Luxury Villa in Gurgaon"
+    f.input :description, as: :text,
+                          input_html: { rows: 5, placeholder: "Enter property description..." }
+  
+    # Dropdown for Property Type
+    f.input :property_type, as: :select,
+                            collection: ["Residential", "Commercial", "Agricultural", "Industrial"],
+                            include_blank: "Select Property Type"
+  
+    # Dropdown for Subtype
+    f.input :subtype, as: :select,
+                      collection: ["Plot", "Flat/Apartment", "Villa", "Shop", "Office", "Farmhouse"],
+                      include_blank: "Select Subtype"
+  
+    f.input :location, placeholder: "e.g., DLF Phase 2, Gurgaon"
+    f.input :price, label: "Price (INR)", placeholder: "e.g., 2,50,00,000"
+  
+    # Dropdown for Ownership Type
+    f.input :ownership_type, as: :select,
+                             collection: ["Freehold", "Leasehold", "Power of Attorney", "Co-operative"],
+                             include_blank: "Select Ownership Type"
+  
+    f.input :total_area, placeholder: "e.g., 350 sq yards"
+  
+    # Dropdown for Jamabandi Year (dynamic)
+    f.input :jamabandi_year, as: :select,
+                             collection: (2000..Time.current.year).to_a.reverse,
+                             include_blank: "Select Jamabandi Year"
+  
+    f.input :boundaries, as: :text,
+                         input_html: { rows: 3, placeholder: "North: Road, South: Park..." }
+  end
+  
+  # === Legal & Status ===
+  f.inputs '⚖️ Legal & Approval Details' do
+    f.input :dispute_status, label: "Dispute Status"
+    f.input :dispute_summary, as: :text, placeholder: "Short summary of legal issues..."
+    f.input :status, as: :select, collection: ["Available", "Sold", "Under Dispute"], include_blank: "Select Status"
+    f.input :approved, label: "Approved for Listing"
+    f.input :featured, label: "Featured Property"
+  end
+
+  # === Main Image ===
+  f.inputs '📸 Main Image' do
+    if f.object.main_image.attached?
+      div style: "margin-bottom: 10px;" do
+        image_tag url_for(f.object.main_image), style: 'max-width: 250px; border: 1px solid #ddd; border-radius: 8px; padding: 5px;'
       end
-      f.input :main_image, as: :file
-      f.input :main_image_url, label: "Main Image URL (optional, overrides file if provided)"
     end
+    f.input :main_image, as: :file, label: "Upload Main Image"
+    f.input :main_image_url, label: "Main Image URL (optional)"
+  end
 
-    f.inputs 'Thumbnail' do
-      if f.object.thumbnail.attached?
-        div do
-          image_tag url_for(f.object.thumbnail), style: 'max-width: 200px;'
-        end
+  # === Thumbnail ===
+  f.inputs '🖼️ Thumbnail' do
+    if f.object.thumbnail.attached?
+      div style: "margin-bottom: 10px;" do
+        image_tag url_for(f.object.thumbnail), style: 'max-width: 150px; border: 1px solid #ddd; border-radius: 8px; padding: 5px;'
       end
-      f.input :thumbnail, as: :file
-      f.input :thumbnail_url, label: "Thumbnail URL (optional, overrides file if provided)"
     end
+    f.input :thumbnail, as: :file, label: "Upload Thumbnail"
+    f.input :thumbnail_url, label: "Thumbnail URL (optional)"
+  end
 
-    f.inputs 'Gallery Images' do
-      if f.object.images.attached?
+  # === Gallery ===
+  f.inputs '📷 Gallery Images' do
+    if f.object.images.attached?
+      div style: "display: flex; flex-wrap: wrap;" do
         f.object.images.each do |img|
-          div do
-            image_tag url_for(img), style: 'max-width: 150px; margin: 5px;'
+          div style: "margin: 5px;" do
+            image_tag url_for(img), style: 'max-width: 120px; border: 1px solid #eee; border-radius: 6px;'
           end
         end
       end
-      f.input :images, as: :file, input_html: { multiple: true }
     end
-
-    f.inputs 'Documents' do
-      f.input :title_document_files, as: :file, input_html: { multiple: true }
-      f.input :mutation_document_files, as: :file, input_html: { multiple: true }
-      f.input :aksfard_document_files, as: :file, input_html: { multiple: true }
-      f.input :court_case_document_files, as: :file, input_html: { multiple: true }
-      f.input :supporting_documents, as: :file, input_html: { multiple: true }
-    end
-
-    f.actions
+    f.input :images, as: :file, input_html: { multiple: true }, label: "Upload Multiple Images"
   end
+
+  # === Documents ===
+  f.inputs '📑 Property Documents' do
+    f.input :title_document_files, as: :file, input_html: { multiple: true }, label: "Title Documents"
+    f.input :mutation_document_files, as: :file, input_html: { multiple: true }, label: "Mutation Papers"
+    f.input :aksfard_document_files, as: :file, input_html: { multiple: true }, label: "Aks Fard / Land Records"
+    f.input :court_case_document_files, as: :file, input_html: { multiple: true }, label: "Court Case Files"
+    f.input :supporting_documents, as: :file, input_html: { multiple: true }, label: "Other Supporting Docs"
+  end
+
+  f.actions do
+    f.action :submit, label: "💾 Save Property", button_html: { class: "btn-primary" }
+    f.cancel_link
+  end
+end
 
   show do
     attributes_table do
