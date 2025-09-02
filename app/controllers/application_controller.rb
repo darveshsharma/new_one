@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   # Redirect user if not an active member
   def require_active_member
     unless user_signed_in? && current_user.active_member?
-      redirect_to membership_payments_path, alert: "Please become a member to access this page."
+      redirect_to membership_payment_path(3), alert: "Please become a member to access this page."
     end
   end
 
