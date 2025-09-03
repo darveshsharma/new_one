@@ -28,5 +28,26 @@
   </main>
 
   <%= render 'shared/footer' %>
-</body>
 
+  <!-- Flash Modal Popup -->
+  <% if flash[:notice] %>
+    <div id="flash-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm text-center animate-fadeIn">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">✅ Success</h2>
+        <p class="text-gray-600"><%= flash[:notice] %></p>
+        <button onclick="document.getElementById('flash-modal').remove()" 
+                class="mt-4 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+          OK
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+  <script>
+    // Optional auto-close after 5s
+    setTimeout(() => {
+      const modal = document.getElementById('flash-modal');
+      if (modal) modal.remove();
+    }, 5000);
+  </script>
+</body>

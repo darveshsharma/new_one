@@ -1,133 +1,111 @@
 <!-- Underlapping full-screen background image -->
 <div class="fixed inset-0 -z-10">
-  <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3w0MTUzNjZ8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBob3VzZXxlbnwwfHx8fDE2OTU4NjgxODN8MA&auto=format&fit=crop&w=1470&q=80" 
+  <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" 
        alt="Background" 
        class="w-full h-full object-cover">
-  <div class="absolute inset-0 bg-black opacity-30"></div>
+  <div class="absolute inset-0 bg-black/40"></div>
 </div>
 
 <div class="relative z-10">
 
- <!-- First Section -->
- <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 py-12">
+  <!-- Hero Section -->
+  <section class="flex flex-col justify-center items-center text-center px-6 py-16 lg:py-28">
 
-  <!-- Transparent Box -->
-  <div class="bg-[#354041]/80 rounded-2xl shadow-xl p-10 max-w-5xl mx-auto">
+    <div class="bg-[#354041]/80 rounded-2xl shadow-xl p-6 sm:p-10 max-w-4xl mx-auto">
 
-    <!-- Logo -->
-    <%= image_tag "logo.png", 
-          alt: "Hamara Group Logo", 
-          style: "width: 100%; height: 100%; max-width: 12rem; max-height: 12rem;", 
-          class: "mx-auto my-6" %>
+      <!-- Logo -->
+      <%= image_tag "logo.png", alt: "Hamara Group Logo", class: "mx-auto my-6 w-28 h-auto md:w-40" %>
 
-    <!-- Main Heading -->
-    <h1 class="font-[Manrope] text-[#ccaa79] text-[3.5em] md:text-[5em] leading-tight tracking-wide mb-5">
-      <strong>Real Estate Redefined</strong>
-    </h1>
+      <!-- Main Heading -->
+      <h1 class="font-[Manrope] text-[#ccaa79] text-3xl md:text-6xl leading-tight tracking-wide mb-4">
+        <strong>Real Estate Redefined</strong>
+      </h1>
 
-    <!-- Subheading -->
-    <p class="font-[Mulish] text-[#ccaa79] text-[1.5em] md:text-[1.875em] leading-snug mb-8">
-      We help you find the perfect home.
-    </p>
-
-    <!-- Description -->
-    <div class="text-[#d6ad72] font-[Mulish] text-base md:text-lg leading-relaxed mb-10 text-justify">
-      <p>
-        Welcome to <strong>Lands Lords</strong> – India’s Trusted Name in High-Value & Disputed Property Solutions.
+      <!-- Subheading -->
+      <p class="font-[Mulish] text-[#ccaa79] text-lg md:text-2xl leading-snug mb-6">
+        We help you find the perfect home.
       </p>
-      <p class="mt-4">
-        At Lands Lords, we specialize in high-value real estate across India — from luxury residences
-        and commercial landmarks to industrial plots and heritage properties. Our services span PAN
-        India, offering unmatched access, insight, and execution power that no other platform can
-        provide.
-      </p>
-      <p class="mt-4">
-        What truly sets us apart is our expertise in disputed properties — including legal conflicts, title
-        issues, inheritance matters, and regulatory hurdles. With a robust network of legal advisors, real
-        estate experts, and on-ground specialists, we offer end-to-end support for any property-related
-        concern, no matter how complex.
-      </p>
-      <p class="mt-4">
-        Whether you’re buying, selling, investing, or resolving property disputes, Lands Lords is your
-        one-stop, trusted partner.
-      </p>
+
+      <!-- Description -->
+      <div class="text-[#d6ad72] font-[Mulish] text-sm md:text-lg leading-relaxed mb-8 text-center sm:text-justify space-y-4">
+        <p>
+          Welcome to <strong>Lands Lords</strong> – India’s Trusted Name in High-Value & Disputed Property Solutions.
+        </p>
+        <p>
+          From luxury residences and commercial landmarks to industrial plots and heritage properties, we offer unmatched access and insight across India.
+        </p>
+        <p>
+          Our specialty lies in handling disputed properties — including legal conflicts, title issues, and inheritance matters — with a strong legal and field team at your side.
+        </p>
+        <p>
+          Whether you’re buying, selling, investing, or resolving disputes, <strong>Lands Lords</strong> is your trusted partner.
+        </p>
+      </div>
+
+      <!-- Button -->
+      <a href="/properties"
+         class="bg-[#ccaa79] text-[#354041] px-6 py-3 font-bold text-lg rounded-md border-2 border-[#354041] hover:bg-[#b48f5c] transition inline-block">
+        VIEW PROPERTIES
+      </a>
     </div>
+  </section>
 
-    <!-- Button -->
-    <a href="/properties"
-       class="bg-[#ccaa79] text-[#354041] px-6 py-4 font-bold text-[1.25em] rounded-md border-[5px] border-double border-[#354041] hover:bg-[#b48f5c] transition inline-block">
-      VIEW PROPERTIES
-    </a>
+  <!-- Featured Properties -->
+  <section class="py-16 bg-[#354041] text-[#d6ad72]">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Featured Properties</h2>
 
-  </div>
-</section>
-</div>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <% Property.featured.limit(3).each do |property| %>
+        <div class="bg-[#2c343b] rounded-xl p-4 shadow-md text-center">
+          <% if property.main_image.attached? %>
+            <%= image_tag property.main_image, alt: property.title, class: "rounded-lg mb-4 w-full h-52 object-cover" %>
+          <% else %>
+            <img src="https://via.placeholder.com/400x300?text=No+Image" alt="No Image" class="rounded-lg mb-4 w-full h-52 object-cover">
+          <% end %>
 
+          <h3 class="text-lg font-semibold mb-1"><%= property.title %></h3>
+          <p class="text-sm mb-3"><%= property.property_type %> · ₹<%= number_with_delimiter(property.price) %></p>
 
-<!-- Second Section (fully transparent) -->
-<section class="min-h-screen flex flex-col justify-center items-center text-white px-4">
-
-</section>
-
-<!-- Third Section: Featured Properties (dynamic) -->
-<section class="py-20 bg-[#354041] text-[#d6ad72]">
-  <h2 class="text-4xl font-bold text-center mb-12">Featured Properties</h2>
-
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-  <% Property.featured.limit(3).each do |property| %>
-    <div class="text-center relative group">
-      <% if property.main_image.attached? %>
-        <%= image_tag property.main_image, alt: property.title, class: "rounded-lg mb-4 w-full h-64 object-cover" %>
-      <% else %>
-        <img src="https://via.placeholder.com/400x300?text=No+Image" alt="No Image" class="rounded-lg mb-4 w-full h-64 object-cover">
-      <% end %>
-
-      <h3 class="text-xl font-semibold"><%= property.title %></h3>
-      <p><%= property.property_type %> · ₹<%= number_with_delimiter(property.price) %></p>
-
-      <% if user_signed_in? && current_user.active_member? %>
-        <%= link_to 'View Details', property_path(property), class: "inline-block mt-2 px-6 py-2 bg-[#d6ad72] text-[#354041] font-semibold rounded-full hover:bg-[#b48f5c] transition" %>
-      <% else %>
-        <div class="relative group cursor-not-allowed mt-2">
-          <%= link_to 'View Details', "#", class: "inline-block bg-[#d6ad72] text-[#354041] px-6 py-2 rounded-full font-semibold transition blur-sm pointer-events-none" %>
-          
-          <!-- Tooltip -->
-          <div class="absolute -top-20 left-1/2 transform -translate-x-1/2 w-64 bg-black text-white text-sm rounded-md shadow-lg px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
-            🚫 Only members can view property details.<br/>
-            <strong><a href="/membership_payments/3" class="underline text-[#d6ad72]">Buy a membership</a></strong> to unlock full access!
-            <div class="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rotate-45"></div>
-          </div>
+          <% if user_signed_in? && current_user.active_member? %>
+            <%= link_to 'View Details', property_path(property), class: "inline-block px-5 py-2 bg-[#d6ad72] text-[#354041] font-semibold rounded-full hover:bg-[#b48f5c] transition" %>
+          <% else %>
+            <div class="relative group cursor-not-allowed">
+              <%= link_to 'View Details', "#", class: "inline-block px-5 py-2 bg-[#d6ad72] text-[#354041] rounded-full font-semibold transition blur-sm pointer-events-none" %>
+              
+              <!-- Tooltip -->
+              <div class="absolute -top-20 left-1/2 transform -translate-x-1/2 w-56 bg-black text-white text-xs rounded-md shadow-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition duration-300">
+                🚫 Only members can view property details.<br/>
+                <strong><a href="/membership_payments/3" class="underline text-[#d6ad72]">Buy a membership</a></strong>
+                <div class="absolute bottom-[-6px] left-1/2 transform -translate-x-1/2 w-3 h-3 bg-black rotate-45"></div>
+              </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
-  <% end %>
-</div>
-
 
     <% if Property.featured.count == 0 %>
-      <p class="col-span-3 text-center">No featured properties available.</p>
+      <p class="col-span-3 text-center mt-6">No featured properties available.</p>
     <% end %>
-  </div>
-</section>
+  </section>
 
-
-<!-- Fourth Section: Client Testimonials (unchanged) -->
-<section class="py-20 bg-[#d6ad72] text-[#354041]">
-  <h2 class="text-4xl font-bold text-center mb-12">Client Testimonials</h2>
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-    <div class="text-center italic">
-      <p>"They patiently explained everything, answered all my questions, and helped me find a house that fit both my budget and my lifestyle."</p>
-      <p class="mt-4 font-bold">Jessica K.</p>
+  <!-- Testimonials -->
+  <section class="py-16 bg-[#d6ad72] text-[#354041]">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Client Testimonials</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <div class="bg-white/70 p-6 rounded-xl shadow-md text-center italic">
+        <p>"They patiently explained everything and helped me find a home that fit both my budget and lifestyle."</p>
+        <p class="mt-4 font-bold">Jessica K.</p>
+      </div>
+      <div class="bg-white/70 p-6 rounded-xl shadow-md text-center italic">
+        <p>"Excellent negotiators — they secured a great offer for me. Highly recommend!"</p>
+        <p class="mt-4 font-bold">Leon Y.</p>
+      </div>
+      <div class="bg-white/70 p-6 rounded-xl shadow-md text-center italic">
+        <p>"Their expertise in the local market is invaluable, and their dedication unmatched."</p>
+        <p class="mt-4 font-bold">Clint E.</p>
+      </div>
     </div>
-    <div class="text-center italic">
-      <p>"They were also excellent negotiators and secured a great offer for me. I highly recommend them to anyone looking to sell their home quickly and efficiently."</p>
-      <p class="mt-4 font-bold">Leon Y.</p>
-    </div>
-    <div class="text-center italic">
-      <p>"Their expertise in the local market is invaluable, and their dedication to their clients is unmatched."</p>
-      <p class="mt-4 font-bold">Clint E.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
 </div>
