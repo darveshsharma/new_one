@@ -28,6 +28,10 @@ class User < ApplicationRecord
     role == 'admin'
   end
 
+  def member_paid?
+    self.membership_paid
+  end
+
   def self.ransackable_associations(auth_object = nil)
     %w[properties consultation_requests]
   end

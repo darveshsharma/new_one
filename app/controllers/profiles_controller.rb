@@ -1,6 +1,8 @@
 # app/controllers/profiles_controller.rb
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
+    skip_before_action :check_access  # Just in case
+
 
   def edit
     @user = current_user

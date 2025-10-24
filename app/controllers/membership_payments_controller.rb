@@ -1,5 +1,7 @@
 class MembershipPaymentsController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :check_access  # Just in case
+
 
   def new
     if current_user&.membership_paid

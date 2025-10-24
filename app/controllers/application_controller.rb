@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :check_profile_completion, if: :user_signed_in?
+  before_action :check_access
 
   layout :layout_by_resource
 
@@ -35,6 +36,22 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def check_access
+    # Skip Devise controllers (login/signup pages)
+    return if devise_controller?
+
+    # If user not logged in → show popup
+    if !user_signed_in?
+      @show_member_modal = true
+      return
+    end
+
+    # If user logged in but not paid → show popup
+    unless current_user.member_paid?
+      @show_member_modal = true
+    end
+  end
 
   def layout_by_resource
     if devise_controller?

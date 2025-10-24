@@ -23,10 +23,9 @@
 <body class="flex flex-col min-h-screen relative">
   <%= render 'shared/navbar' %>
 
-  <main class="flex-grow">
-    <%= yield %>
-  </main>
-
+<main id="main-content" class="flex-grow">
+  <%= yield %>
+</main>
   <%= render 'shared/footer' %>
 
   <!-- Flash Modal Popup -->
@@ -50,4 +49,16 @@
       if (modal) modal.remove();
     }, 5000);
   </script>
+  <%= render 'shared/member_modal' if @show_member_modal %>
+
+<% if @show_member_modal %>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById('memberModal');
+      modal.classList.remove('hidden');
+      document.getElementById('main-content')?.classList.add('hidden');
+    });
+  </script>
+<% end %>
+
 </body>
