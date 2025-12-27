@@ -26,44 +26,21 @@ filter :updated_at
 form html: { multipart: true, class: "property-form" } do |f|
   f.semantic_errors
 
+  # === Basic Info ===
   f.inputs '🏠 Basic Property Details' do
-    f.input :user, as: :select,
-                   collection: User.all.map { |u| [u.email, u.id] },
-                   prompt: "Select User by Email"
-  
+    f.input :user, as: :select, collection: User.all.map { |u| [u.email, u.id] }, prompt: "Select User by Email"
     f.input :title, placeholder: "e.g., Luxury Villa in Gurgaon"
-    f.input :description, as: :text,
-                          input_html: { rows: 5, placeholder: "Enter property description..." }
-  
-    # Dropdown for Property Type
-    f.input :property_type, as: :select,
-                            collection: ["Residential", "Commercial", "Agricultural", "Industrial"],
-                            include_blank: "Select Property Type"
-  
-    # Dropdown for Subtype
-    f.input :subtype, as: :select,
-                      collection: ["Plot", "Flat/Apartment", "Villa", "Shop", "Office", "Farmhouse"],
-                      include_blank: "Select Subtype"
-  
+    f.input :description, as: :text, input_html: { rows: 5, placeholder: "Enter property description..." }
+    f.input :property_type, label: "Property Type"
+    f.input :subtype, label: "Subtype"
     f.input :location, placeholder: "e.g., DLF Phase 2, Gurgaon"
     f.input :price, label: "Price (INR)", placeholder: "e.g., 2,50,00,000"
-  
-    # Dropdown for Ownership Type
-    f.input :ownership_type, as: :select,
-                             collection: ["Freehold", "Leasehold", "Power of Attorney", "Co-operative"],
-                             include_blank: "Select Ownership Type"
-  
+    f.input :ownership_type, label: "Ownership Type"
     f.input :total_area, placeholder: "e.g., 350 sq yards"
-  
-    # Dropdown for Jamabandi Year (dynamic)
-    f.input :jamabandi_year, as: :select,
-                             collection: (2000..Time.current.year).to_a.reverse,
-                             include_blank: "Select Jamabandi Year"
-  
-    f.input :boundaries, as: :text,
-                         input_html: { rows: 3, placeholder: "North: Road, South: Park..." }
+    f.input :jamabandi_year, label: "Jamabandi Year"
+    f.input :boundaries, as: :text, input_html: { rows: 3, placeholder: "North: Road, South: Park..." }
   end
-  
+
   # === Legal & Status ===
   f.inputs '⚖️ Legal & Approval Details' do
     f.input :dispute_status, label: "Dispute Status"

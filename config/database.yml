@@ -52,5 +52,18 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
+production: &production
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: hamara_group
+  pool: 5
+  username: root
+  password: rootroot
+  host: 127.0.0.1
+
+queue:
+  <<: *production
+
+cable:
+  <<: *production

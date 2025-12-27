@@ -18,8 +18,8 @@
         <div class="overflow-hidden rounded shadow-lg">
           <% main_image_url = nil %>
 
-          <% if @property.images.attached? %>
-            <% main_image_url = url_for(@property.images.first) %>
+          <% if @property.main_image.attached? %>
+            <% main_image_url = url_for(@property.main_image) %>
           <% elsif @property.images_table_records.any? && @property.images_table_records.first.main_image.present? %>
             <% main_image_url = @property.images_table_records.first.main_image %>
           <% end %>
