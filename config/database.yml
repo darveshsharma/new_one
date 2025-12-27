@@ -7,13 +7,34 @@ default: &default
   password: strongpassword
 
 development:
-  <<: *default
-  database: hamara_group_development
+  primary:
+    <<: *default
+    database: hamara_group_development
+  queue:
+    <<: *default
+    database: hamara_group_development
+  cable:
+    <<: *default
+    database: hamara_group_development
 
 test:
-  <<: *default
-  database: hamara_group_test
+  primary:
+    <<: *default
+    database: hamara_group_test
+  queue:
+    <<: *default
+    database: hamara_group_test
+  cable:
+    <<: *default
+    database: hamara_group_test
 
 production:
-  <<: *default
-  database: hamara_group
+  primary:
+    <<: *default
+    database: hamara_group
+  queue:
+    <<: *default
+    database: hamara_group
+  cable:
+    <<: *default
+    database: hamara_group
